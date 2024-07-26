@@ -1,10 +1,12 @@
+local vec = require 'lib.vector'
 local r = {
     fullscreen = false,
     tileSize = 16,
     amountTilesShownX = 14,
     --later defined
     windowScale = 0,
-    maxWindowHeight = 0
+    maxWindowHeight = 0,
+    vecLastFrame = vec.new(0,0)
 }
 
 ---Setup cam
@@ -41,6 +43,28 @@ function r.adjustCamToWindow(cam)
     local scaleY = height / (r.tileSize * r.amountTilesShownX)
     cam:zoomTo(1*scaleY)
     return r.fullscreen
+end
+
+---Poll mouse position and move cam
+function r:moveCamWithMouse()
+    if love.mouse.isDown(1) then
+	if self.vecLastFrame.x == 0 and self.vecLastFrame.y == 0 then
+	    self.vecLastFrame.x = love.mouse.getX()
+	    self.vecLastFrame.y = love.mouse.getY()
+	else
+	    local mousePos = vec.new(love.mouse.getX(),love.mouse.getY())
+	    local diff = self.vecLastFrame - mousePos
+	    self.vecLastFrame.x = love.mouse.getX()
+	    self.vecLastFrame.y = love.mouse.getY()
+
+	    -- We have to extract the zoom from the vector to move the camera 1:1
+	    Cam:WorldCoords()
+	    Cam:move(diff.x /Cam.scale, diff.y / Cam.scale)
+	end
+    else
+	self.vecLastFrame.x = 0
+	self.vecLastFrame.y = 0
+    end
 end
 
 return r

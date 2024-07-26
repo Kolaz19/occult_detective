@@ -27,6 +27,8 @@ end
 
 function r:update(dt)
     --Map:update(dt)
+    local camConfig = require 'cam'
+    camConfig:moveCamWithMouse()
 end
 
 function r:draw()
