@@ -9,6 +9,8 @@ function r:init()
     Cam:lookAt(0, 0)
     Cam:zoom(0.8)
 
+    local providedShapes = { { shape.new(1, {}) } }
+
     --[[
     local sti = require('lib.STI')
     Map = sti("assets/maps/dungeon.lua")
