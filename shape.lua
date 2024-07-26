@@ -14,8 +14,9 @@ shape.__index = shape
 ---@param x number
 ---@param y number
 ---@param score number
+---@param world table physics world
 ---@return table
-shape.new = function(id, form, isPlaced, connectionLimit, connections, variant, reach, height, width, x, y, score)
+shape.new = function(id, form, isPlaced, connectionLimit, connections, variant, reach, height, width, x, y, score, world)
     local shapeInstance = {}
     shapeInstance.id = id
     shapeInstance.form = form
@@ -29,6 +30,17 @@ shape.new = function(id, form, isPlaced, connectionLimit, connections, variant, 
     shapeInstance.x = x
     shapeInstance.y = y
     shapeInstance.score = score
+
+    shapeInstance.physicsObject = {
+	body = love.physics.newBody(world,x,y, "dynamic"),
+    }
+    if form == FORM.SQUARE then
+	shapeInstance.physicsObject.shape = love.physics.newRectangleShape(width, height)
+    elseif form == FORM.CIRCLE then
+	shapeInstance.physicsObject.shape = love.physics.newCircleShape(height)
+    end
+    shapeInstance.physicsObject.fixture(shapeInstance.physicsObject.body, shapeInstance.physicsObject.shape)
+
     setmetatable(shapeInstance, shape)
     return shapeInstance
 end
