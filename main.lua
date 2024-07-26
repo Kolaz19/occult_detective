@@ -14,7 +14,7 @@ local Gamestate = require 'lib.gamestate'
 
 function love.load()
     if DEBUG then
-	io.stdout:setvbuf("no")
+        io.stdout:setvbuf("no")
     end
     love.window.setMode(0, 0)
     local maxWindowWidth = love.graphics.getWidth()
