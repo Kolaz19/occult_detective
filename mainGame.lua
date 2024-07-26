@@ -1,7 +1,7 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game')
+local game = require('game'):new(1000, 20)
 
 function r:init()
     --Set screen to max size
@@ -9,7 +9,8 @@ function r:init()
     Cam:lookAt(0, 0)
     Cam:zoom(0.8)
 
-    local providedShapes = { { shape.new(1, {}) } }
+    local firstShape = shape.new("123", FORM_VARIANTS.square[1],4,50,50,50, 0,0,40,game.world)
+    --local providedShapes = { { shape.new(1, {}) } }
 
     --[[
     local sti = require('lib.STI')
@@ -24,14 +25,11 @@ function r:keypressed(key, scancode, isrepeat)
     end
 end
 
-local function registerCamMovement()
-
-end
-
 function r:update(dt)
     --Map:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
+    game.world:update(dt)
 end
 
 function r:draw()

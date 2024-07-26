@@ -3,10 +3,8 @@ shape.__index = shape
 
 ---comment
 ---@param id string
----@param formVariant table
----@param isPlaced boolean
+---@param formVariant number
 ---@param connectionLimit number
----@param connections table
 ---@param reach number
 ---@param height number
 ---@param width number
@@ -15,13 +13,12 @@ shape.__index = shape
 ---@param score number
 ---@param world table physics world
 ---@return table
-shape.new = function(id, formVariant, isPlaced, connectionLimit, connections, reach, height, width, x, y, score, world)
+shape.new = function(id, formVariant, connectionLimit, reach, height, width, x, y, score, world)
     local shapeInstance = {}
     shapeInstance.id = id
     shapeInstance.formVariant = formVariant
-    shapeInstance.isPlaced = isPlaced
+    shapeInstance.isPlaced = false
     shapeInstance.connectionLimit = connectionLimit
-    shapeInstance.connections = connections
     shapeInstance.reach = reach
     shapeInstance.height = height
     shapeInstance.width = width
@@ -32,15 +29,19 @@ shape.new = function(id, formVariant, isPlaced, connectionLimit, connections, re
     shapeInstance.physicsObject = {
         body = love.physics.newBody(world, x, y, "dynamic"),
     }
-    if form == FORM.SQUARE then
+    if GetShapeFromVariant(formVariant) == FORM.SQUARE then
         shapeInstance.physicsObject.shape = love.physics.newRectangleShape(width, height)
-    elseif form == FORM.CIRCLE then
+    elseif GetShapeFromVariant(formVariant) == FORM.CIRCLE then
         shapeInstance.physicsObject.shape = love.physics.newCircleShape(height)
     end
-    shapeInstance.physicsObject.fixture(shapeInstance.physicsObject.body, shapeInstance.physicsObject.shape)
+    shapeInstance.physicsObject.fixture = love.physics.newFixture(shapeInstance.physicsObject.body, shapeInstance.physicsObject.shape)
 
     setmetatable(shapeInstance, shape)
     return shapeInstance
+end
+
+shape.update = function()
+
 end
 
 return shape

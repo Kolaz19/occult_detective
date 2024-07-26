@@ -2,19 +2,16 @@ local game = {}
 game.__index = game
 
 ---comment
----@param score number
----@param rounds table
 ---@param maxRoundCount number
----@param currentRound number
 ---@param placedShapes table
 ---@return table
-game.new = function(score, rounds, maxRoundCount, currentRound, placedShapes)
+game.new = function( maxRoundCount, placedShapes)
     local gameInstance = {}
-    gameInstance.score = score
-    gameInstance.rounds = rounds
+    gameInstance.score = 0
     gameInstance.maxRoundCount = maxRoundCount
-    gameInstance.currentRound = currentRound
+    gameInstance.currentRound = 1
     gameInstance.placedShapes = placedShapes
+    gameInstance.world = love.physics.newWorld(0,0)
     setmetatable(gameInstance, game)
     return gameInstance
 end
