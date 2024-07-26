@@ -13,6 +13,7 @@ DEBUG = true
 local Gamestate = require 'lib.gamestate'
 
 function love.load()
+    require('formVariants')
     if DEBUG then
         io.stdout:setvbuf("no")
     end

@@ -1,16 +1,18 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0 }
+local shape = require('shape')
+local round = require('round')
+local game = require('game')
 
 function r:init()
     --Set screen to max size
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
-    Cam:lookAt(0,0)
+    Cam:lookAt(0, 0)
     Cam:zoom(0.8)
 
     --[[
     local sti = require('lib.STI')
     Map = sti("assets/maps/dungeon.lua")
     --]]
-
 end
 
 function r:keypressed(key, scancode, isrepeat)
@@ -19,7 +21,6 @@ function r:keypressed(key, scancode, isrepeat)
         love.window.setFullscreen(camConfig.adjustCamToWindow(Cam))
     end
 end
-
 
 local function registerCamMovement()
 
@@ -33,7 +34,7 @@ end
 
 function r:draw()
     Cam:attach()
-	love.graphics.rectangle("line", 0,0,90,90)
+    love.graphics.rectangle("line", 0, 0, 90, 90)
     Cam:detach()
 end
 
