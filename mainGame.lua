@@ -1,4 +1,4 @@
-local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1 }
+local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
 local game = require('game').new(1000, {})
@@ -34,20 +34,16 @@ local function getRandomGameBonus()
     end
 end
 
-local function calculateRoundScore()
-    local score = 0
-    for index, value in ipairs(game.placedShapes) do
-        score = shape + value.score
-    end
-    return score
-end
 
 function r:init()
     --Set screen to max size
     Background = love.graphics.newImage("assets/Spielfeld.png")
     r.backgroundWidth = Background:getWidth()
     r.backgroundHeight = Background:getHeight()
-    Cam = require('cam').setupCam(r.backgroundWidth,r.maxWindowHeight, r.backgroundScale)
+    Cam = require('cam').setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
+    Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
+    local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
+    Cam:zoom(scale)
 
     --local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     --table.insert(game.placedShapes, initialShape)
@@ -105,7 +101,7 @@ end
 function r:update(dt)
     --Map:update(dt)
     local camConfig = require 'cam'
-    camConfig:moveCamWithMouse()
+    --camConfig:moveCamWithMouse()
 
     --Update status und position of shapes
     --Update placed shapes
@@ -132,7 +128,7 @@ function r:update(dt)
     end
 
     for index, value in ipairs(game.rounds.providedShapes) do
-        value:updatePos(index)
+        value:updatePos(index, r.backgroundWidth*r.backgroundScale, r.backgroundHeight*r.backgroundScale)
     end
 
     --Move provided shapes into placed shapes

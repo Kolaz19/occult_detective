@@ -9,9 +9,12 @@ local r = {
 
 ---Setup cam
 ---@return table Camera
-function r.setupCam(backgroundWidth,backgroundHeight, backgroundScale)
+function r.setupCam(maxWindowHeight,backgroundHeight, backgroundScale)
     local camera = require 'lib.camera'
-    local cam = camera(backgroundWidth * backgroundScale / 2, backgroundHeight * backgroundScale / 2)
+    local cam = camera()
+    r.maxWindowHeight = maxWindowHeight
+    r.backgroundHeight = backgroundHeight
+    r.backgroundScale = backgroundScale
     --cam:zoomTo(1)
     --cam:lookAt()
     --[[
@@ -28,13 +31,12 @@ end
 ---@return boolean r.fullscreen Game is fullscreen
 function r:adjustCamToWindow()
     r.fullscreen = not r.fullscreen
-    --local scale = r.maxWindowHeight / ( r.maxWindowHeight - r.maxWindowHeight * r.windowScale )
-
-    local scale = 0
+    local scale = r.maxWindowHeight  / r.backgroundHeight / r.backgroundScale
     if not r.fullscreen then
-        scale = 0
-	self:zoomTo(1 + scale)
+        scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
     end
+    self:zoomTo(1)
+    self:zoom(scale)
     return r.fullscreen
 end
 

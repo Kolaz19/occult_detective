@@ -1,4 +1,4 @@
 function love.conf(t)
-    t.window.title = 'Dungeon'
+    t.window.title = 'Detective'
     --t.window.icon = 'assets/icon.png'
 end
