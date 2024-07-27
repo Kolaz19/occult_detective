@@ -18,9 +18,17 @@ FORM_VARIANTS = {
 		radius = 30,
 		shiftX = 60,
 		shiftY = 60,
-		score = function()
+		score = function(shape)
 			-- + 30 pro Medallie
-			return 0
+			local score = 0
+
+			for _, connectedShape in ipairs(shape.connections) do
+				if (shape.formVariant == FORM_VARIANTS.cultAmulet) then
+					score = score + 30
+				end
+			end
+
+			return score
 		end,
 		img = love.graphics.newImage("assets/PolaroidV2.png")
 	},
@@ -32,20 +40,20 @@ FORM_VARIANTS = {
 		shiftX = 50,
 		shiftY = 60,
 		score = function(shape)
-			local scoreModifier = 0
+			local score = 0
 
 			for _, connectedShape in ipairs(shape.connections) do
 				if (connectedShape.formVariant == FORM_VARIANTS.newspaperBottomHalf) then
-					scoreModifier = scoreModifier + 150
+					score = score + 150
 				end
 			end
 
 			-- malus: newspaper is standing alone
 			if (#(shape.connections) == 0) then
-				scoreModifier = scoreModifier - 50
+				score = score - 50
 			end
 
-			return scoreModifier
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
@@ -57,14 +65,14 @@ FORM_VARIANTS = {
 		shiftX = 50,
 		shiftY = 60,
 		score = function(shape)
-			local scoreModifier = 0
+			local score = 0
 
 			-- malus: newspaper is standing alone
 			if (#(shape.connections) == 0) then
-				scoreModifier = scoreModifier - 50
+				score = score - 50
 			end
 
-			return scoreModifier
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
@@ -78,7 +86,18 @@ FORM_VARIANTS = {
 		score = function(shape)
 			-- pro cultist + 100
 			-- pro acolyte + 50
-			return 0
+			local score = 0
+
+			for _, connectedShape in ipairs(shape.connections) do
+				if (connectedShape.formVariant == FORM_VARIANTS.cultist) then
+					score = score + 100
+				end
+				if (connectedShape.formVariant == FORM_VARIANTS.acolyte) then
+					score = score + 50
+				end
+			end
+
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
@@ -91,7 +110,31 @@ FORM_VARIANTS = {
 		shiftY = 60,
 		score = function(shape)
 			-- je ganze Zeitung + 150
-			return 0
+			local score = 0
+			local newspaperShapes = {}
+
+			for _, connectedShape in ipairs(shape.connections) do
+				if (connectedShape.formVariant == FORM_VARIANTS.newspaperBottomHalf or
+						connectedShape.formVariant == FORM_VARIANTS.newspaperTopHalf) then
+					table.insert(newspaperShapes, connectedShape)
+				end
+			end
+
+			for _, newspaperHalf in ipairs(newspaperShapes) do
+				if (#(newspaperHalf.connectedShapes) > 1) then
+					for __, newspaperHalfConnectedShape in ipairs(newspaperHalf.connectedShapes) do
+						if (newspaperHalf.formVariant == FORM_VARIANTS.newspaperBottomHalf and
+								newspaperHalfConnectedShape.formVariant == FORM_VARIANTS.newspaperTopHalf) then
+							score = score + 150
+						elseif (newspaperHalf.formVariant == FORM_VARIANTS.newspaperTopHalf and
+								newspaperHalfConnectedShape.formVariant == FORM_VARIANTS.newspaperBottomHalf) then
+							score = score + 150
+						end
+					end
+				end
+			end
+
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
@@ -104,7 +147,15 @@ FORM_VARIANTS = {
 		shiftY = 60,
 		score = function(shape)
 			-- je acolyte + 100
-			return 0
+			local score = 0
+
+			for _, connectedShape in ipairs(shape.connections) do
+				if (connectedShape.formVariant == FORM_VARIANTS.acolyte) then
+					score = score + 100
+				end
+			end
+
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
@@ -117,7 +168,15 @@ FORM_VARIANTS = {
 		shiftY = 60,
 		score = function(shape)
 			-- je cultist + 200
-			return 0
+			local score = 0
+
+			for _, connectedShape in ipairs(shape.connections) do
+				if (connectedShape.formVariant == FORM_VARIANTS.cultist) then
+					score = score + 200
+				end
+			end
+
+			return score
 		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	}
