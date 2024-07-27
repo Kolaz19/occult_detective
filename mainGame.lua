@@ -47,14 +47,13 @@ function r:init()
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
     Cam:lookAt(0, 0)
     --Cam:zoom(0.2)
-    --Background = love.graphics.newImage("assets/Spielfeld.png")
+    Background = love.graphics.newImage("assets/Spielfeld.png")
 
     --local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     --table.insert(game.placedShapes, initialShape)
 
     ---@diagnostic disable-next-line: need-check-nil
     game.rounds = round.new(generateShapes(7, game.world))
-
 end
 
 function r:keypressed(key, scancode, isrepeat)
@@ -67,41 +66,40 @@ end
 function r:endRound()
     local shapeInstanceToCalc = nil
     --Choose shape that has points left to score
-    for _,shapeInstance in ipairs(game.placedShapes) do
-	if shapeInstance.scoreCalcLeft ~= 0 then
-	    shapeInstanceToCalc = shapeInstance
-	end
+    for _, shapeInstance in ipairs(game.placedShapes) do
+        if shapeInstance.scoreCalcLeft ~= 0 then
+            shapeInstanceToCalc = shapeInstance
+        end
     end
 
     --Continue counting score of chosen shape
     if shapeInstanceToCalc ~= nil then
-	--Remove score from shape over time
-	game.score = game.score + shapeInstanceToCalc:subScore()
+        --Remove score from shape over time
+        game.score = game.score + shapeInstanceToCalc:subScore()
     else
-    --If no shape is chosen, choose new shape to count
-	for _,shapeInstance in ipairs(game.placedShapes) do
-	    if not shapeInstance.scoreCalculated then
-		--This is next shape that needs to be calculated
-		shapeInstance:addScoreToCount()
-		break
-	    end
-	end
+        --If no shape is chosen, choose new shape to count
+        for _, shapeInstance in ipairs(game.placedShapes) do
+            if not shapeInstance.scoreCalculated then
+                --This is next shape that needs to be calculated
+                shapeInstance:addScoreToCount()
+                break
+            end
+        end
     end
 
     local finished = true
-    for _,shapeInstance in ipairs(game.placedShapes) do
-	if not shapeInstance.scoreCalculated then
-	    finished = false
-	end
+    for _, shapeInstance in ipairs(game.placedShapes) do
+        if not shapeInstance.scoreCalculated then
+            finished = false
+        end
     end
 
     if finished == true then
-	for _,shapeInstance in ipairs(game.placedShapes) do
-	    shapeInstance.scoreCalculated = false
-	end
-    game.rounds = round.new(generateShapes(7, game.world))
+        for _, shapeInstance in ipairs(game.placedShapes) do
+            shapeInstance.scoreCalculated = false
+        end
+        game.rounds = round.new(generateShapes(7, game.world))
     end
-
 end
 
 function r:update(dt)
@@ -112,7 +110,7 @@ function r:update(dt)
     --Update status und position of shapes
     --Update placed shapes
     for _, value in ipairs(game.placedShapes) do
-	value:updatePos()
+        value:updatePos()
     end
     --Update provided shapes
     local activeShape = nil
@@ -140,27 +138,27 @@ function r:update(dt)
     --Move provided shapes into placed shapes
     local elemtToSwitch = 0
     for key, val in ipairs(game.rounds.providedShapes) do
-	if val.wasDropped == true then
-	    elemtToSwitch = key
-	end
+        if val.wasDropped == true then
+            elemtToSwitch = key
+        end
     end
-    table.insert(game.placedShapes,game.rounds.providedShapes[elemtToSwitch])
-    table.remove(game.rounds.providedShapes,elemtToSwitch)
+    table.insert(game.placedShapes, game.rounds.providedShapes[elemtToSwitch])
+    table.remove(game.rounds.providedShapes, elemtToSwitch)
 
     --Combine places shapes
     if activeShape ~= nil then activeShape:removeConnections() end
     for _, val in ipairs(game.placedShapes) do
-	if activeShape ~= nil then activeShape:addConnection(val) end
-	val:removeConnections()
-	for _, valIn in ipairs(game.placedShapes) do
-	  if val ~= valIn then
-	      val:addConnection(valIn)
-	  end
-	end
+        if activeShape ~= nil then activeShape:addConnection(val) end
+        val:removeConnections()
+        for _, valIn in ipairs(game.placedShapes) do
+            if val ~= valIn then
+                val:addConnection(valIn)
+            end
+        end
     end
 
     if #(game.rounds.providedShapes) == 0 then
-	self:endRound()
+        self:endRound()
     end
 
 
@@ -169,7 +167,7 @@ end
 
 function r:draw()
     Cam:attach()
-    --love.graphics.draw(Background,-3000,-1000,0, 0.3, 0.3)
+    love.graphics.draw(Background, -3000, -1000, 0, 0.3, 0.3)
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
         shapeInstance:draw()
@@ -180,13 +178,13 @@ function r:draw()
     Cam:detach()
 
     --Draw score
-    love.graphics.print("Score: "..game.score, 1750,20,0,3,3)
+    love.graphics.print("Score: " .. game.score, 1750, 20, 0, 3, 3)
     if #(game.rounds.providedShapes) == 0 then
-	for _, shapeInstance in ipairs(game.placedShapes) do
-	    if shapeInstance.scoreCalcLeft ~= 0 then
-		shapeInstance:drawScore()
-	    end
-	end
+        for _, shapeInstance in ipairs(game.placedShapes) do
+            if shapeInstance.scoreCalcLeft ~= 0 then
+                shapeInstance:drawScore()
+            end
+        end
     end
 end
 
