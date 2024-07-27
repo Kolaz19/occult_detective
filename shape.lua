@@ -65,6 +65,15 @@ local function setPositionForProvided(self, index)
     self.physicsObject.body:setPosition(self.pos.x, self.pos.y)
 end
 
+local function isUnderThresholdScreen(self)
+    local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
+    if curMousePos.y > Cam.y + 250 then
+	return true
+    else
+	return false
+    end
+end
+
 function shape:updateStatus()
     if self.isPlaced then return end
     if self.isActive and love.mouse.isDown(1) then
@@ -76,9 +85,14 @@ function shape:updateStatus()
         return self.isActive
     elseif self.isActive and not love.mouse.isDown(1) then
         self.isActive = false
-        self.isPlaced = true
-        self.physicsObject.fixture:setSensor(false)
-	self.wasDropped = true
+	if isUnderThresholdScreen(self) then
+	    self.physicsObject.fixture:setSensor(true)
+	    self.connections = {}
+	else
+	    self.isPlaced = true
+	    self.physicsObject.fixture:setSensor(false)
+	    self.wasDropped = true
+	end
         return self.isActive
     end
 end
@@ -133,7 +147,11 @@ function shape:draw()
     self.physicsObject.shape:getRadius())
     --]]
     for _,con in ipairs(self.connections) do
+	if con.isActive or self.isActive then
+	    love.graphics.setColor(love.math.colorFromBytes(255,0,255))
+	end
 	love.graphics.line(self.pos.x, self.pos.y, con.pos.x, con.pos.y)
+	love.graphics.setColor(1,1,1)
     end
 end
 
