@@ -64,29 +64,26 @@ local function isMouseInsideShape(self)
     end
 end
 
-function shape:update()
+function shape:updateStatus()
+    if self.isPlaced then return end
+    if self.isActive and love.mouse.isDown(1) then
+	return
+    elseif love.mouse.isDown(1) and isMouseInsideShape(self) then
+	self.isActive = true
+    elseif self.isActive and not love.mouse.isDown(1) then
+	self.isActive = false
+	self.isPlaced = true
+	self.physicsObject.fixture:setSensor(true)
+    end
+end
+
+function shape:updatePos()
     self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
     if self.isPlaced then return end
 
     if self.isActive then
-	if love.mouse.isDown(1) then
-	    followMouse(self)
-	else
-	    self.isActive = false
-	    --place or logic to place it back
-	    --self.physicsObject.fixture:setSensor(true)
-	end
-    else
-	if love.mouse.isDown(1) and isMouseInsideShape(self) then
-	    --follow when inside shape
-	    self.isActive = true
-	    self.physicsObject.fixture:setSensor(false)
-	    followMouse(self)
-	else
-	    return
-	end
+	followMouse(self)
     end
-
 
 end
 

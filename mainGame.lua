@@ -60,8 +60,10 @@ function r:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
 
-    FirstShape:update()
-    SecondShape:update()
+    FirstShape:updateStatus()
+    FirstShape:updatePos()
+    SecondShape:updateStatus()
+    SecondShape:updatePos()
     game.world:update(dt)
 end
 
