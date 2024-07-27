@@ -11,6 +11,7 @@ function shape:initPhysics(world, formVariant)
         self.physicsObject.shape = love.physics.newCircleShape(self.height)
     end
     self.physicsObject.fixture = love.physics.newFixture(self.physicsObject.body, self.physicsObject.shape)
+    self.physicsObject.fixture:setSensor(true)
 end
 
 ---comment
@@ -45,7 +46,9 @@ shape.new = function(id, formVariant, connectionLimit, reach, height, width, x, 
     return shapeInstance
 end
 
-shape.update = function()
+function shape:update()
+    if self.isPlaced == true then return end
+    if not love.mouse.isDown(1) then return end
 
 end
 
