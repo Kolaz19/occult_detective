@@ -30,9 +30,6 @@ function r:init()
     Cam:lookAt(0, 0)
     Cam:zoom(0.2)
 
-    FirstShape = shape.new(FORM_VARIANTS.circleOne, game.world)
-    SecondShape = shape.new(FORM_VARIANTS.circleOne, game.world)
-
     local initialShape = shape.new(FORM_VARIANTS.circleOne, game.world)
     table.insert(game.placedShapes, initialShape)
 
@@ -49,9 +46,6 @@ function r:keypressed(key, scancode, isrepeat)
     if key == 'f' then
         local camConfig = require 'cam'
         love.window.setFullscreen(camConfig.adjustCamToWindow(Cam))
-    end
-    if key == 's' then
-        SecondShape.physicsObject.body:applyLinearImpulse(-4, -4)
     end
 end
 
@@ -86,11 +80,11 @@ end
 function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
-    for _,shapeInstance in ipairs(game.rounds.providedShapes) do
-	love.graphics.circle("fill",
-	    shapeInstance.physicsObject.body:getX(),
-	    shapeInstance.physicsObject.body:getY(),
-	    shapeInstance.physicsObject.shape:getRadius())
+    for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+        love.graphics.circle("fill",
+            shapeInstance.physicsObject.body:getX(),
+            shapeInstance.physicsObject.body:getY(),
+            shapeInstance.physicsObject.shape:getRadius())
     end
     Cam:detach()
 end
