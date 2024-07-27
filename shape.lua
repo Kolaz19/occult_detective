@@ -2,7 +2,7 @@ local shape = {}
 local vector = require 'lib.vector'
 shape.__index = shape
 
-function shape:initPhysics(world, formVariant)
+function shape:initPhysics(world)
     self.physicsObject = {
         body = love.physics.newBody(world, self.pos.x, self.pos.y, "dynamic"),
     }
