@@ -5,19 +5,17 @@ function shape:initPhysics(world, formVariant)
     self.physicsObject = {
         body = love.physics.newBody(world, self.x, self.y, "dynamic"),
     }
-    if GetShapeFromVariant(formVariant) == FORM.square then
+    if formVariant.form == FORM.square then
         self.physicsObject.shape = love.physics.newRectangleShape(self.width, self.height)
-    elseif GetShapeFromVariant(formVariant) == FORM.circle then
+    elseif formVariant.form == FORM.circle then
         self.physicsObject.shape = love.physics.newCircleShape(self.height)
     end
     self.physicsObject.fixture = love.physics.newFixture(self.physicsObject.body, self.physicsObject.shape)
 end
 
 ---comment
----@param id string
----@param formVariant number
----@param connectionLimit number
----@param reach number
+---@param id number
+---@param formVariant table
 ---@param height number
 ---@param width number
 ---@param x number
@@ -25,14 +23,16 @@ end
 ---@param score number
 ---@param world table physics world
 ---@return table
-shape.new = function(id, formVariant, connectionLimit, reach, height, width, x, y, score, world)
+shape.new = function(id, formVariant, height, width, x, y, score, world)
     local shapeInstance = {}
     setmetatable(shapeInstance, shape)
-    shapeInstance.id = id
+
+    require('mainGame')
+    ShapeIdentifier = id + 1
+    shapeInstance.id = ShapeIdentifier
+
     shapeInstance.formVariant = formVariant
     shapeInstance.isPlaced = false
-    shapeInstance.connectionLimit = connectionLimit
-    shapeInstance.reach = reach
     shapeInstance.height = height
     shapeInstance.width = width
     shapeInstance.x = x
@@ -40,7 +40,7 @@ shape.new = function(id, formVariant, connectionLimit, reach, height, width, x, 
     shapeInstance.score = score
     shapeInstance.connections = {}
 
-    shapeInstance:initPhysics(world,formVariant)
+    shapeInstance:initPhysics(world, formVariant)
 
     return shapeInstance
 end
