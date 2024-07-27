@@ -60,10 +60,16 @@ function r:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
 
-    FirstShape:updateStatus()
-    FirstShape:updatePos()
-    SecondShape:updateStatus()
-    SecondShape:updatePos()
+    for _, value in ipairs(game.rounds.providedShapes) do
+        if (value:updateStatus()) then
+            break
+        end
+    end
+
+    for index, value in ipairs(game.rounds.providedShapes) do
+        value:updatePos(index)
+    end
+
     game.world:update(dt)
 end
 
