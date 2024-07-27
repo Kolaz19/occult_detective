@@ -70,3 +70,6 @@ FORM_VARIANTS = {
 		width = 16
 	}
 }
+
+VARIANT_COUNT = 0
+for _ in pairs(FORM_VARIANTS) do VARIANT_COUNT = VARIANT_COUNT + 1 end

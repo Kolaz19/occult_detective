@@ -11,10 +11,14 @@ function r:init()
     Cam:zoom(0.2)
     --local providedShapes = { { shape.new(1, {}) } }
 
-    FirstShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 30, 0, 0, 40, game.world)
-    SecondShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 30, 80, 80, 40, game.world)
+    FirstShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 0, 0, 100, game.world)
+    SecondShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 50, 50, 100, game.world)
 
+    local initialShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 12, 12, 100, game.world)
+    local round1 = round.new({ initialShape })
+    local round2 = round.new({ FirstShape, SecondShape })
 
+    game.rounds = { round1, round2 }
     --[[
     local sti = require('lib.STI')
     Map = sti("assets/maps/dungeon.lua")
