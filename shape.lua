@@ -1,9 +1,10 @@
 local shape = {}
+local vector = require 'lib.vector'
 shape.__index = shape
 
 function shape:initPhysics(world, formVariant)
     self.physicsObject = {
-        body = love.physics.newBody(world, self.x, self.y, "dynamic"),
+        body = love.physics.newBody(world, self.pos.x, self.pos.y, "dynamic"),
     }
     if formVariant.form == FORM.square then
         self.physicsObject.shape = love.physics.newRectangleShape(self.width, self.height)
@@ -28,7 +29,6 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
     local shapeInstance = {}
     setmetatable(shapeInstance, shape)
 
-    require('mainGame')
     ShapeIdentifier = id + 1
     shapeInstance.id = ShapeIdentifier
 
@@ -36,10 +36,10 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
     shapeInstance.isPlaced = false
     shapeInstance.height = height
     shapeInstance.width = width
-    shapeInstance.x = x
-    shapeInstance.y = y
+    shapeInstance.pos = vector.new(x,y)
     shapeInstance.score = score
     shapeInstance.connections = {}
+    print(#FORM_VARIANTS)
 
     shapeInstance:initPhysics(world, formVariant)
 
@@ -47,9 +47,21 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
 end
 
 function shape:update()
+    self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
     if self.isPlaced == true then return end
-    if not love.mouse.isDown(1) then return end
+    if not love.mouse.isDown(1) then
+	return
+    else
+	self.physicsObject.fixture:setSensor(true)
+    end
 
+    local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
+    local distance = self.pos:dist(curMousePos)
+
+    if distance < self.physicsObject.shape:getRadius() then
+	self.physicsObject.fixture:setSensor(false)
+	self.physicsObject.body:setPosition(curMousePos.x, curMousePos.y)
+    end
 end
 
 return shape

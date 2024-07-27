@@ -8,11 +8,11 @@ function r:init()
     --Set screen to max size
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
     Cam:lookAt(0, 0)
-    Cam:zoom(1.2)
+    Cam:zoom(0.2)
     --local providedShapes = { { shape.new(1, {}) } }
 
     FirstShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 30, 0, 0, 40, game.world)
-    SecondShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 30, 50, 50, 40, game.world)
+    SecondShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 30, 80, 80, 40, game.world)
 
 
     --[[
@@ -35,6 +35,9 @@ function r:update(dt)
     --Map:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
+
+    FirstShape:update()
+    SecondShape:update()
     game.world:update(dt)
 end
 
@@ -42,16 +45,13 @@ function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
     love.graphics.circle("fill",
-
         FirstShape.physicsObject.body:getX(),
         FirstShape.physicsObject.body:getY(),
         FirstShape.physicsObject.shape:getRadius())
-
     love.graphics.circle("fill",
         SecondShape.physicsObject.body:getX(),
         SecondShape.physicsObject.body:getY(),
         SecondShape.physicsObject.shape:getRadius())
-
     Cam:detach()
 end
 
