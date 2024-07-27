@@ -6,8 +6,8 @@ FORM_VARIANTS = {
 		radius = 30,
 		shiftX = 60,
 		shiftY = 60,
-		mofifier = function()
-			return 0
+		modifier = function()
+			return 80
 		end,
 		img = love.graphics.newImage("assets/PolaroidV2.png")
 	},

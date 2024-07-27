@@ -47,6 +47,7 @@ function r:init()
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
     Cam:lookAt(0, 0)
     --Cam:zoom(0.2)
+    --Background = love.graphics.newImage("assets/Spielfeld.png")
 
     --local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     --table.insert(game.placedShapes, initialShape)
@@ -54,10 +55,6 @@ function r:init()
     ---@diagnostic disable-next-line: need-check-nil
     game.rounds = round.new(generateShapes(7, game.world))
 
-    --[[
-    local sti = require('lib.STI')
-    Map = sti("assets/maps/dungeon.lua")
-    --]]
 end
 
 function r:keypressed(key, scancode, isrepeat)
@@ -65,6 +62,46 @@ function r:keypressed(key, scancode, isrepeat)
         local camConfig = require 'cam'
         love.window.setFullscreen(camConfig.adjustCamToWindow(Cam))
     end
+end
+
+function r:endRound()
+    local shapeInstanceToCalc = nil
+    --Choose shape that has points left to score
+    for _,shapeInstance in ipairs(game.placedShapes) do
+	if shapeInstance.scoreCalcLeft ~= 0 then
+	    shapeInstanceToCalc = shapeInstance
+	end
+    end
+
+    --Continue counting score of chosen shape
+    if shapeInstanceToCalc ~= nil then
+	--Remove score from shape over time
+	game.score = game.score + shapeInstanceToCalc:subScore()
+    else
+    --If no shape is chosen, choose new shape to count
+	for _,shapeInstance in ipairs(game.placedShapes) do
+	    if not shapeInstance.scoreCalculated then
+		--This is next shape that needs to be calculated
+		shapeInstance:addScoreToCount()
+		break
+	    end
+	end
+    end
+
+    local finished = true
+    for _,shapeInstance in ipairs(game.placedShapes) do
+	if not shapeInstance.scoreCalculated then
+	    finished = false
+	end
+    end
+
+    if finished == true then
+	for _,shapeInstance in ipairs(game.placedShapes) do
+	    shapeInstance.scoreCalculated = false
+	end
+    game.rounds = round.new(generateShapes(7, game.world))
+    end
+
 end
 
 function r:update(dt)
@@ -122,12 +159,17 @@ function r:update(dt)
 	end
     end
 
+    if #(game.rounds.providedShapes) == 0 then
+	self:endRound()
+    end
+
 
     game.world:update(dt)
 end
 
 function r:draw()
     Cam:attach()
+    --love.graphics.draw(Background,-3000,-1000,0, 0.3, 0.3)
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
         shapeInstance:draw()
@@ -136,6 +178,16 @@ function r:draw()
         shapeInstance:draw()
     end
     Cam:detach()
+
+    --Draw score
+    love.graphics.print("Score: "..game.score, 1750,20,0,3,3)
+    if #(game.rounds.providedShapes) == 0 then
+	for _, shapeInstance in ipairs(game.placedShapes) do
+	    if shapeInstance.scoreCalcLeft ~= 0 then
+		shapeInstance:drawScore()
+	    end
+	end
+    end
 end
 
 function r:enter(previous)

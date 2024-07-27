@@ -29,9 +29,11 @@ shape.new = function(formVariant, world)
     shapeInstance.height = formVariant.radius * 2
     shapeInstance.width = 0
     shapeInstance.pos = vector.new(0, 0)
-    shapeInstance.score = 100
     shapeInstance.connections = {}
     shapeInstance.wasDropped = false
+
+    shapeInstance.scoreCalculated = false
+    shapeInstance.scoreCalcLeft = 0
 
     shapeInstance:initPhysics(world, formVariant)
 
@@ -87,7 +89,15 @@ function shape:updateStatus()
         self.isActive = false
 	if isUnderThresholdScreen(self) then
 	    self.physicsObject.fixture:setSensor(true)
-	    self.connections = {}
+	    --we also have to remove connection in connected shape
+	    for key,val in ipairs(self.connections) do
+		for keyIn,valIn in ipairs(val.connections) do
+		    if valIn == self then
+			table.remove(val.connections,keyIn)
+		    end
+		end
+		self.connections[key] = nil
+	    end
 	else
 	    self.isPlaced = true
 	    self.physicsObject.fixture:setSensor(false)
@@ -138,8 +148,47 @@ function shape:addConnection(partner)
     end
 end
 
+function shape:addScoreToCount()
+    self.scoreCalcLeft = self.formVariant.modifier(self)
+    if self.scoreCalcLeft == 0 then
+	self.scoreCalculated = true
+    end
+end
+
+function shape:subScore()
+    if self.scoreCalcLeft > 0 then
+	self.scoreCalcLeft = self.scoreCalcLeft - 1
+	if self.scoreCalcLeft == 0 then self.scoreCalculated = true end
+	return 1
+    elseif self.scoreCalcLeft < 0 then
+	self.scoreCalcLeft = self.scoreCalcLeft + 1
+	if self.scoreCalcLeft == 0 then self.scoreCalculated = true end
+	return -1
+    else
+    end
+end
+
+function shape:drawScore()
+    if self.scoreCalcLeft > 0 then
+	love.graphics.setColor(love.math.colorFromBytes(0,255,0))
+    else
+	love.graphics.setColor(love.math.colorFromBytes(255,0,0))
+
+    end
+    love.graphics.print(self.scoreCalcLeft,1875,60,0,3,3)
+    love.graphics.setColor(1,1,1)
+end
+
 function shape:draw()
+    if self.scoreCalcLeft > 0 then
+	--love.graphics.setColor(love.math.colorFromBytes(229,255,204))
+	love.graphics.setColor(love.math.colorFromBytes(102,255,102))
+    elseif self.scoreCalcLeft < 0 then
+	--love.graphics.setColor(love.math.colorFromBytes(255,204,204))
+	love.graphics.setColor(love.math.colorFromBytes(255,102,102))
+    end
     love.graphics.draw(self.formVariant.img, self.pos.x - self.formVariant.shiftX, self.pos.y - self.formVariant.shiftY,0,0.3,0.3)
+    love.graphics.setColor(1,1,1)
     --[[
     love.graphics.circle("fill",
     self.physicsObject.body:getX(),
