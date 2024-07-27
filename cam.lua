@@ -8,16 +8,12 @@ local r = {
 }
 
 ---Setup cam
----@param maxWindowHeight number
----@param windowScale number
 ---@return table Camera
-function r.setupCam(maxWindowHeight, windowScale)
-    --We want to show 14 tiles horizontally
-    --local scaleY = maxWindowHeight * windowScale / (r.tileSize * r.amountTilesShownX)
+function r.setupCam(backgroundWidth,backgroundHeight, backgroundScale)
     local camera = require 'lib.camera'
-    local cam = camera(0, 0)
-    cam:zoomTo(1)
-    r.maxWindowHeight = maxWindowHeight
+    local cam = camera(backgroundWidth * backgroundScale / 2, backgroundHeight * backgroundScale / 2)
+    --cam:zoomTo(1)
+    --cam:lookAt()
     --[[
     local shiftX = windowWidth / scaleY / 2
     local shiftY = (30 - 16  + (16/2)) * 16

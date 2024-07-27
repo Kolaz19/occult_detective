@@ -1,4 +1,4 @@
-local r = { windowScale = 0.8, maxWindowHeight = 0 }
+local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1 }
 local shape = require('shape')
 local round = require('round')
 local game = require('game').new(1000, {})
@@ -44,10 +44,10 @@ end
 
 function r:init()
     --Set screen to max size
-    Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
-    Cam:lookAt(0, 0)
-    --Cam:zoom(0.2)
     Background = love.graphics.newImage("assets/Spielfeld.png")
+    r.backgroundWidth = Background:getWidth()
+    r.backgroundHeight = Background:getHeight()
+    Cam = require('cam').setupCam(r.backgroundWidth,r.maxWindowHeight, r.backgroundScale)
 
     --local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     --table.insert(game.placedShapes, initialShape)
@@ -167,7 +167,7 @@ end
 
 function r:draw()
     Cam:attach()
-    love.graphics.draw(Background, -3000, -1000, 0, 0.3, 0.3)
+    love.graphics.draw(Background,0,0,0, r.backgroundScale, r.backgroundScale)
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
         shapeInstance:draw()
