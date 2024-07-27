@@ -30,7 +30,7 @@ function r:init()
     Cam:lookAt(0, 0)
     Cam:zoom(0.2)
 
-    local initialShape = shape.new(FORM_VARIANTS.circleOne, game.world)
+    local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     table.insert(game.placedShapes, initialShape)
 
     ---@diagnostic disable-next-line: need-check-nil
@@ -56,19 +56,19 @@ function r:update(dt)
 
     local oneActive = false
     for _, value in ipairs(game.rounds.providedShapes) do
-	if value.isActive then
-	    if (value:updateStatus()) then
-		oneActive = true
-	    end
+        if value.isActive then
+            if (value:updateStatus()) then
+                oneActive = true
+            end
         end
     end
 
     if not oneActive then
-	for _, value in ipairs(game.rounds.providedShapes) do
-	    if (value:updateStatus()) then
-		break
-	    end
-	end
+        for _, value in ipairs(game.rounds.providedShapes) do
+            if (value:updateStatus()) then
+                break
+            end
+        end
     end
 
     for index, value in ipairs(game.rounds.providedShapes) do
