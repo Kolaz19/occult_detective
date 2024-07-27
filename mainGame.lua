@@ -78,17 +78,17 @@ function r:update(dt)
 	value:updatePos()
     end
     --Update provided shapes
-    local oneActive = false
+    local activeShape = nil
     for _, value in ipairs(game.rounds.providedShapes) do
         if value.isActive then
             if (value:updateStatus()) then
-                oneActive = true
+                activeShape = value
             end
         end
     end
 
     --Only one should be the active shape
-    if not oneActive then
+    if not activeShape then
         for _, value in ipairs(game.rounds.providedShapes) do
             if (value:updateStatus()) then
                 break
@@ -111,9 +111,11 @@ function r:update(dt)
     table.remove(game.rounds.providedShapes,elemtToSwitch)
 
     --Combine places shapes
-    for key, val in ipairs(game.placedShapes) do
+    if activeShape ~= nil then activeShape:removeConnections() end
+    for _, val in ipairs(game.placedShapes) do
+	if activeShape ~= nil then activeShape:addConnection(val) end
 	val:removeConnections()
-	for keyIn, valIn in ipairs(game.placedShapes) do
+	for _, valIn in ipairs(game.placedShapes) do
 	  if val ~= valIn then
 	      val:addConnection(valIn)
 	  end
