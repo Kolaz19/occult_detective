@@ -69,21 +69,18 @@ function r:update(dt)
     for index, value in ipairs(game.rounds.providedShapes) do
         value:updatePos(index)
     end
-
     game.world:update(dt)
 end
 
 function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
-    love.graphics.circle("fill",
-        FirstShape.physicsObject.body:getX(),
-        FirstShape.physicsObject.body:getY(),
-        FirstShape.physicsObject.shape:getRadius())
-    love.graphics.circle("fill",
-        SecondShape.physicsObject.body:getX(),
-        SecondShape.physicsObject.body:getY(),
-        SecondShape.physicsObject.shape:getRadius())
+    for _,shapeInstance in ipairs(game.rounds.providedShapes) do
+	love.graphics.circle("fill",
+	    shapeInstance.physicsObject.body:getX(),
+	    shapeInstance.physicsObject.body:getY(),
+	    shapeInstance.physicsObject.shape:getRadius())
+    end
     Cam:detach()
 end
 

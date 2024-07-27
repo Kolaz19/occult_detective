@@ -64,25 +64,42 @@ local function isMouseInsideShape(self)
     end
 end
 
+local function setPositionForProvided(self, index)
+    --Calculate base position
+    self.pos.x = Cam.x + 90 - love.graphics.getWidth()/2
+    self.pos.y = Cam.y - 120 + love.graphics.getHeight()/2
+    --Offset based on index
+    self.pos.x = self.pos.x + (80 * (index - 1))
+    self.physicsObject.body:setPosition(self.pos.x, self.pos.y)
+end
+
 function shape:updateStatus()
     if self.isPlaced then return end
     if self.isActive and love.mouse.isDown(1) then
-	return
+	self.physicsObject.fixture:setSensor(true)
+	return self.isActive
     elseif love.mouse.isDown(1) and isMouseInsideShape(self) then
 	self.isActive = true
+	self.physicsObject.fixture:setSensor(true)
+	return self.isActive
     elseif self.isActive and not love.mouse.isDown(1) then
 	self.isActive = false
 	self.isPlaced = true
-	self.physicsObject.fixture:setSensor(true)
+	self.physicsObject.fixture:setSensor(false)
+	return self.isActive
     end
 end
 
-function shape:updatePos()
+
+---@param index integer Index in placedTiles table 
+function shape:updatePos(index)
     self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
     if self.isPlaced then return end
 
     if self.isActive then
 	followMouse(self)
+    else
+	setPositionForProvided(self,index)
     end
 
 end
