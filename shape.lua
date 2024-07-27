@@ -40,7 +40,6 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
     shapeInstance.pos = vector.new(x, y)
     shapeInstance.score = score
     shapeInstance.connections = {}
-    print(#FORM_VARIANTS)
 
     shapeInstance:initPhysics(world, formVariant)
 
@@ -67,22 +66,46 @@ local generateShapes = function(amount, world)
     return shapes
 end
 
-function shape:update()
-    self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
-    if self.isPlaced == true then return end
-    if not love.mouse.isDown(1) then
-        return
-    else
-        self.physicsObject.fixture:setSensor(true)
-    end
+local function followMouse(self)
+    local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
+    self.physicsObject.body:setPosition(curMousePos.x, curMousePos.y)
+end
 
+local function isMouseInsideShape(self)
     local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
     local distance = self.pos:dist(curMousePos)
 
     if distance < self.physicsObject.shape:getRadius() then
-        self.physicsObject.fixture:setSensor(false)
-        self.physicsObject.body:setPosition(curMousePos.x, curMousePos.y)
+	return true
+    else
+	return false
     end
+end
+
+function shape:update()
+    self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
+    if self.isPlaced then return end
+
+    if self.isActive then
+	if love.mouse.isDown(1) then
+	    followMouse(self)
+	else
+	    self.isActive = false
+	    --place or logic to place it back
+	    --self.physicsObject.fixture:setSensor(true)
+	end
+    else
+	if love.mouse.isDown(1) and isMouseInsideShape(self) then
+	    --follow when inside shape
+	    self.isActive = true
+	    self.physicsObject.fixture:setSensor(false)
+	    followMouse(self)
+	else
+	    return
+	end
+    end
+
+
 end
 
 return shape, generateShapes
