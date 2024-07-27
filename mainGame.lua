@@ -60,10 +60,21 @@ function r:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
 
+    local oneActive = false
     for _, value in ipairs(game.rounds.providedShapes) do
-        if (value:updateStatus()) then
-            break
+	if value.isActive then
+	    if (value:updateStatus()) then
+		oneActive = true
+	    end
         end
+    end
+
+    if not oneActive then
+	for _, value in ipairs(game.rounds.providedShapes) do
+	    if (value:updateStatus()) then
+		break
+	    end
+	end
     end
 
     for index, value in ipairs(game.rounds.providedShapes) do
