@@ -3,14 +3,21 @@ FORM_VARIANTS = {
 		id = 1,
 		connectionLimit = 4,
 		reach = 40,
-		radius = 15
+		radius = 30,
+		shiftX = 60,
+		shiftY = 60,
+		img = love.graphics.newImage("assets/PolaroidV2.png")
 	},
-	circleTwo = {
+	newspaperCult = {
 		id = 2,
 		connectionLimit = 4,
 		reach = 40,
-		radius = 15
+		radius = 30,
+		shiftX = 50,
+		shiftY = 60,
+		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
+	--[[
 	circleThree = {
 		id = 3,
 		connectionLimit = 4,
@@ -53,6 +60,7 @@ FORM_VARIANTS = {
 		reach = 40,
 		radius = 15
 	}
+	--]]
 }
 
 VARIANT_COUNT = 0

@@ -81,10 +81,7 @@ function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-        love.graphics.circle("fill",
-            shapeInstance.physicsObject.body:getX(),
-            shapeInstance.physicsObject.body:getY(),
-            shapeInstance.physicsObject.shape:getRadius())
+	shapeInstance:draw()
     end
     Cam:detach()
 end

@@ -57,10 +57,10 @@ end
 
 local function setPositionForProvided(self, index)
     --Calculate base position
-    self.pos.x = Cam.x + 90 - love.graphics.getWidth() / 2
+    self.pos.x = Cam.x + 160 - love.graphics.getWidth() / 2
     self.pos.y = Cam.y - 120 + love.graphics.getHeight() / 2
     --Offset based on index
-    self.pos.x = self.pos.x + (80 * (index - 1))
+    self.pos.x = self.pos.x + (150 * (index - 1))
     self.physicsObject.body:setPosition(self.pos.x, self.pos.y)
 end
 
@@ -91,6 +91,14 @@ function shape:updatePos(index)
     else
         setPositionForProvided(self, index)
     end
+end
+
+function shape:draw()
+    love.graphics.draw(self.formVariant.img, self.pos.x - self.formVariant.shiftX, self.pos.y - self.formVariant.shiftY,0,0.3,0.3)
+    love.graphics.circle("fill",
+    self.physicsObject.body:getX(),
+    self.physicsObject.body:getY(),
+    self.physicsObject.shape:getRadius())
 end
 
 return shape
