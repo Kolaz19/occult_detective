@@ -48,8 +48,8 @@ function r:init()
     Cam:lookAt(0, 0)
     --Cam:zoom(0.2)
 
-    local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
-    table.insert(game.placedShapes, initialShape)
+    --local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
+    --table.insert(game.placedShapes, initialShape)
 
     ---@diagnostic disable-next-line: need-check-nil
     game.rounds = round.new(generateShapes(7, game.world))
@@ -72,6 +72,12 @@ function r:update(dt)
     local camConfig = require 'cam'
     camConfig:moveCamWithMouse()
 
+    --Update status und position of shapes
+    --Update placed shapes
+    for _, value in ipairs(game.placedShapes) do
+	value:updatePos()
+    end
+    --Update provided shapes
     local oneActive = false
     for _, value in ipairs(game.rounds.providedShapes) do
         if value.isActive then
@@ -81,6 +87,7 @@ function r:update(dt)
         end
     end
 
+    --Only one should be the active shape
     if not oneActive then
         for _, value in ipairs(game.rounds.providedShapes) do
             if (value:updateStatus()) then
@@ -92,6 +99,18 @@ function r:update(dt)
     for index, value in ipairs(game.rounds.providedShapes) do
         value:updatePos(index)
     end
+
+    --Move provided shapes into placed shapes
+    local elemtToSwitch = 0
+    for key, val in ipairs(game.rounds.providedShapes) do
+	if val.wasDropped == true then
+	    elemtToSwitch = key
+	end
+    end
+    table.insert(game.placedShapes,game.rounds.providedShapes[elemtToSwitch])
+    table.remove(game.rounds.providedShapes,elemtToSwitch)
+
+
     game.world:update(dt)
 end
 
@@ -99,6 +118,9 @@ function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+        shapeInstance:draw()
+    end
+    for _, shapeInstance in ipairs(game.placedShapes) do
         shapeInstance:draw()
     end
     Cam:detach()

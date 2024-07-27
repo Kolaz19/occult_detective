@@ -31,6 +31,7 @@ shape.new = function(formVariant, world)
     shapeInstance.pos = vector.new(0, 0)
     shapeInstance.score = 100
     shapeInstance.connections = {}
+    shapeInstance.wasDropped = false
 
     shapeInstance:initPhysics(world, formVariant)
 
@@ -77,6 +78,7 @@ function shape:updateStatus()
         self.isActive = false
         self.isPlaced = true
         self.physicsObject.fixture:setSensor(false)
+	self.wasDropped = true
         return self.isActive
     end
 end
