@@ -1,20 +1,40 @@
 FORM_VARIANTS = {
 	polaroidPerson = {
 		id = 1,
-		connectionLimit = 4,
+		connectionLimit = 3,
 		reach = 40,
 		radius = 30,
 		shiftX = 60,
 		shiftY = 60,
+		mofifier = function()
+			return 0
+		end,
 		img = love.graphics.newImage("assets/PolaroidV2.png")
 	},
-	newspaperCult = {
+	newspaperCultTopHalf = {
 		id = 2,
-		connectionLimit = 4,
+		connectionLimit = 2,
 		reach = 40,
 		radius = 30,
 		shiftX = 50,
 		shiftY = 60,
+		modifier = function(shape)
+			local scoreModifier = 0
+
+			-- bonus: for each connected person + 50
+			for _, connectedShape in ipairs(shape.connections) do
+				if (connectedShape.formVariant == FORM_VARIANTS.polaroidPerson) then
+					scoreModifier = scoreModifier + 50
+				end
+			end
+
+			-- malus: newspaper is standing alone
+			if (#(shape.connections) == 0) then
+				scoreModifier = scoreModifier - 50
+			end
+
+			return scoreModifier
+		end,
 		img = love.graphics.newImage("assets/ZeitungV2.png")
 	},
 	--[[

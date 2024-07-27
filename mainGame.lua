@@ -24,6 +24,24 @@ local function generateShapes(amount, world)
     return shapes
 end
 
+local function getRandomGameBonus()
+    local randomNumber = love.math.random(BONUS_COUNT)
+
+    for index, value in pairs(GAME_BONUSES) do
+        if (value.id == randomNumber) then
+            return GAME_BONUSES[index]
+        end
+    end
+end
+
+local function calculateRoundScore()
+    local score = 0
+    for index, value in ipairs(game.placedShapes) do
+        score = shape + value.score
+    end
+    return score
+end
+
 function r:init()
     --Set screen to max size
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
@@ -81,7 +99,7 @@ function r:draw()
     Cam:attach()
     love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	shapeInstance:draw()
+        shapeInstance:draw()
     end
     Cam:detach()
 end
