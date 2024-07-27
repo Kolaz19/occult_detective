@@ -46,7 +46,7 @@ function r:init()
     --Set screen to max size
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
     Cam:lookAt(0, 0)
-    Cam:zoom(0.2)
+    --Cam:zoom(0.2)
 
     local initialShape = shape.new(FORM_VARIANTS.polaroidPerson, game.world)
     table.insert(game.placedShapes, initialShape)

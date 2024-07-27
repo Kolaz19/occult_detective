@@ -1,11 +1,9 @@
 local vec = require 'lib.vector'
 local r = {
     fullscreen = false,
-    tileSize = 16,
-    amountTilesShownX = 14,
     --later defined
-    windowScale = 0,
     maxWindowHeight = 0,
+    windowScale = 0.8,
     vecLastFrame = vec.new(0, 0)
 }
 
@@ -15,11 +13,10 @@ local r = {
 ---@return table Camera
 function r.setupCam(maxWindowHeight, windowScale)
     --We want to show 14 tiles horizontally
-    r.windowScale = windowScale
-    local scaleY = maxWindowHeight * windowScale / (r.tileSize * r.amountTilesShownX)
+    --local scaleY = maxWindowHeight * windowScale / (r.tileSize * r.amountTilesShownX)
     local camera = require 'lib.camera'
     local cam = camera(0, 0)
-    cam:zoom(scaleY)
+    cam:zoomTo(1)
     r.maxWindowHeight = maxWindowHeight
     --[[
     local shiftX = windowWidth / scaleY / 2
@@ -32,16 +29,16 @@ end
 
 ---Adjust cam to window size
 ---so that the same ratio is kept
----@param cam table
 ---@return boolean r.fullscreen Game is fullscreen
-function r.adjustCamToWindow(cam)
+function r:adjustCamToWindow()
     r.fullscreen = not r.fullscreen
-    local height = r.maxWindowHeight
+    --local scale = r.maxWindowHeight / ( r.maxWindowHeight - r.maxWindowHeight * r.windowScale )
+
+    local scale = 0
     if not r.fullscreen then
-        height = r.maxWindowHeight * r.windowScale
+        scale = 0
+	self:zoomTo(1 + scale)
     end
-    local scaleY = height / (r.tileSize * r.amountTilesShownX)
-    cam:zoomTo(1 * scaleY)
     return r.fullscreen
 end
 
