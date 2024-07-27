@@ -110,6 +110,16 @@ function r:update(dt)
     table.insert(game.placedShapes,game.rounds.providedShapes[elemtToSwitch])
     table.remove(game.rounds.providedShapes,elemtToSwitch)
 
+    --Combine places shapes
+    for key, val in ipairs(game.placedShapes) do
+	val:removeConnections()
+	for keyIn, valIn in ipairs(game.placedShapes) do
+	  if val ~= valIn then
+	      val:addConnection(valIn)
+	  end
+	end
+    end
+
 
     game.world:update(dt)
 end

@@ -95,12 +95,46 @@ function shape:updatePos(index)
     end
 end
 
+function shape:removeConnections()
+    for index,val in ipairs(self.connections) do
+	if self.pos:dist(val.pos) > (self.formVariant.reach + val.formVariant.reach) then
+	    table.remove(self.connections, index)
+	    break
+	end
+    end
+end
+
+function shape:addConnection(partner)
+    for _,val in ipairs(self.connections) do
+	if partner == val then
+	    return
+	end
+    end
+
+    --Connection limit
+    if self.formVariant.connectionLimit <= #(self.connections)
+	or partner.formVariant.connectionLimit <= #(partner.connections) then
+	return
+    end
+
+    --Add when distance is right
+    if self.pos:dist(partner.pos) < (self.formVariant.reach + partner.formVariant.reach) then
+	table.insert(self.connections, partner)
+	table.insert(partner.connections, self)
+    end
+end
+
 function shape:draw()
     love.graphics.draw(self.formVariant.img, self.pos.x - self.formVariant.shiftX, self.pos.y - self.formVariant.shiftY,0,0.3,0.3)
+    --[[
     love.graphics.circle("fill",
     self.physicsObject.body:getX(),
     self.physicsObject.body:getY(),
     self.physicsObject.shape:getRadius())
+    --]]
+    for _,con in ipairs(self.connections) do
+	love.graphics.line(self.pos.x, self.pos.y, con.pos.x, con.pos.y)
+    end
 end
 
 return shape
