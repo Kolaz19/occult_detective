@@ -4,21 +4,41 @@ local round = require('round')
 local game = require('game').new(1000, {})
 ShapeIdentifier = 0
 
+local function getRandomVariant()
+    local randomNumber = love.math.random(VARIANT_COUNT)
+
+    for index, value in pairs(FORM_VARIANTS) do
+        if (value.id == randomNumber) then
+            return FORM_VARIANTS[index]
+        end
+    end
+end
+
+local function generateShapes(amount, world)
+    local shapes = {}
+    for i = 1, amount, 1 do
+        local newShape = shape.new(getRandomVariant(), world)
+        table.insert(shapes, newShape)
+    end
+
+    return shapes
+end
+
 function r:init()
     --Set screen to max size
     Cam = require('cam').setupCam(r.maxWindowHeight, r.windowScale)
     Cam:lookAt(0, 0)
     Cam:zoom(0.2)
-    --local providedShapes = { { shape.new(1, {}) } }
 
-    FirstShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 0, 0, 100, game.world)
-    SecondShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 50, 50, 100, game.world)
+    FirstShape = shape.new(FORM_VARIANTS.circleOne, game.world)
+    SecondShape = shape.new(FORM_VARIANTS.circleOne, game.world)
 
-    local initialShape = shape.new(ShapeIdentifier, FORM_VARIANTS.circleOne, 50, 0, 12, 12, 100, game.world)
-    local round1 = round.new({ initialShape })
-    local round2 = round.new({ FirstShape, SecondShape })
+    local initialShape = shape.new(FORM_VARIANTS.circleOne, game.world)
+    table.insert(game.placedShapes, initialShape)
 
-    game.rounds = { round1, round2 }
+    ---@diagnostic disable-next-line: need-check-nil
+    game.rounds = round.new(generateShapes(7, game.world))
+
     --[[
     local sti = require('lib.STI')
     Map = sti("assets/maps/dungeon.lua")

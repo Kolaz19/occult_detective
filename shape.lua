@@ -6,30 +6,30 @@ function shape:initPhysics(world, formVariant)
     self.physicsObject = {
         body = love.physics.newBody(world, self.pos.x, self.pos.y, "dynamic"),
     }
-    if formVariant.form == FORM.square then
-        self.physicsObject.shape = love.physics.newRectangleShape(self.width, self.height)
-    elseif formVariant.form == FORM.circle then
-        self.physicsObject.shape = love.physics.newCircleShape(self.height)
-    end
+
+    self.physicsObject.shape = love.physics.newCircleShape(self.height)
     self.physicsObject.fixture = love.physics.newFixture(self.physicsObject.body, self.physicsObject.shape)
     self.physicsObject.fixture:setSensor(true)
 end
 
 ---comment
----@param id number
 ---@param formVariant table
----@param height number
----@param width number
----@param x number
----@param y number
----@param score number
 ---@param world table physics world
 ---@return table
-shape.new = function(id, formVariant, height, width, x, y, score, world)
+shape.new = function(formVariant, world)
     local shapeInstance = {}
     setmetatable(shapeInstance, shape)
+    local height = 0
+    local width = 0
+    if formVariant.form == FORM.circle then
+        height = formVariant.radius * 2
+        width = 0
+    else
+        height = formVariant.height
+        width = formVariant.width
+    end
 
-    ShapeIdentifier = id + 1
+    ShapeIdentifier = ShapeIdentifier + 1
     shapeInstance.id = ShapeIdentifier
 
     shapeInstance.formVariant = formVariant
@@ -37,8 +37,8 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
     shapeInstance.isActive = false
     shapeInstance.height = height
     shapeInstance.width = width
-    shapeInstance.pos = vector.new(x, y)
-    shapeInstance.score = score
+    shapeInstance.pos = vector.new(0, 0)
+    shapeInstance.score = 100
     shapeInstance.connections = {}
 
     shapeInstance:initPhysics(world, formVariant)
@@ -46,25 +46,7 @@ shape.new = function(id, formVariant, height, width, x, y, score, world)
     return shapeInstance
 end
 
-local getRandomVariant = function()
-    local randomNumber = love.math.random(VARIANT_COUNT)
 
-    for index, value in pairs(FORM_VARIANTS) do
-        if (value.id == randomNumber) then
-            return FORM_VARIANTS[index]
-        end
-    end
-end
-
-local generateShapes = function(amount, world)
-    local shapes = {}
-    for i = 1, amount, 1 do
-        local newShape = shape.new(ShapeIdentifier, getRandomVariant(), 50, 0, 0, 0, 100, world)
-        table.insert(shapes, newShape)
-    end
-
-    return shapes
-end
 
 local function followMouse(self)
     local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
@@ -108,4 +90,4 @@ function shape:update()
 
 end
 
-return shape, generateShapes
+return shape
