@@ -47,7 +47,7 @@ end
 
 ---Poll mouse position and move cam
 function r:moveCamWithMouse()
-    if love.mouse.isDown(1) then
+    if love.mouse.isDown(2) then
         if self.vecLastFrame.x == 0 and self.vecLastFrame.y == 0 then
             self.vecLastFrame.x = love.mouse.getX()
             self.vecLastFrame.y = love.mouse.getY()
