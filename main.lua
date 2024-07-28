@@ -15,7 +15,7 @@ Music = {
     intro = love.audio.newSource("assets/GameJamIntro.wav", "static"),
     pin = love.audio.newSource("assets/PinSound.wav", "static"),
     main = {
-	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
+	main = love.audio.newSource("assets/GameJamMainLoop.ogg","static"),
 
 	badge = love.audio.newSource("assets/PoliceBadgeLoop.wav","static"),
 	badgeLevel = 0.0,
@@ -42,7 +42,7 @@ function love.load()
     love.window.setMode(maxWindowWidth * windowScale, maxWindowHeight * windowScale)
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.audio.setVolume(0.5)
-    --love.graphics.setNewFont("assets/ConfessionFontRegular.ttf",15)
+    love.graphics.setNewFont("assets/Rony.ttf",40)
 
     TitleScreen = require('titleScreen')
     TitleScreen.windowScale = windowScale

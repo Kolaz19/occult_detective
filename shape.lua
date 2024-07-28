@@ -186,7 +186,7 @@ function shape:drawScore(backgroundSize)
     else
         love.graphics.setColor(love.math.colorFromBytes(255, 0, 0))
     end
-    love.graphics.print(self.scoreCalcLeft, backgroundSize - 315, 120, 0, 3, 3)
+    love.graphics.print(self.scoreCalcLeft, backgroundSize - 315, 120, 0, 2, 2)
     love.graphics.setColor(1, 1, 1)
 end
 

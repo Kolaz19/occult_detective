@@ -4,31 +4,33 @@ local r = {
     backgroundWidth = 0,
     backgroundHeight = 0,
     backgroundScale = 1.5,
-    buttonScale = 1.3,
+    buttonScale = 1.2,
+    hoverScale = 1.2,
+    hoverShift = 30,
     resumeButton = {
         img = {},
-        x = 2000,
+        x = 1950,
         y = 600,
         isHovered = false
     },
     startButton = {
         img = {},
-        x = 1300,
-        y = 500,
+        x = 1200,
+        y = 450,
         isHovered = false
     },
     exitButton = {
         img = {},
         x = 1400,
-        y = 900,
+        y = 850,
         isHovered = false
     },
 }
 
 
 local function setHoverState(button, mouseX, mouseY)
-    if (mouseX >= button.x and mouseX <= button.x + button.img:getWidth()) and
-        (mouseY >= button.y and mouseY <= button.y + button.img:getHeight()) then
+    if (mouseX >= button.x and mouseX <= button.x + button.img:getWidth() * r.buttonScale) and
+        (mouseY >= button.y and mouseY <= button.y + button.img:getHeight() * r.buttonScale) then
         button.isHovered = true
     else
         button.isHovered = false
@@ -94,23 +96,23 @@ function r:draw()
 
     if r.startButton.isHovered then
         -- hover effect
-        love.graphics.draw(r.startButton.img, r.startButton.x, r.startButton.y, 0, 1, 1)
+        love.graphics.draw(r.startButton.img, r.startButton.x - r.hoverShift, r.startButton.y - r.hoverShift, 0, 1 * r.buttonScale * r.hoverScale, 1 * r.buttonScale * r.hoverScale)
     else
-        love.graphics.draw(r.startButton.img, r.startButton.x, r.startButton.y, 0, 1, 1)
+        love.graphics.draw(r.startButton.img, r.startButton.x, r.startButton.y, 0, 1 * r.buttonScale, 1 * r.buttonScale)
     end
 
     if r.exitButton.isHovered then
         -- hover effect
-        love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1, 1)
+        love.graphics.draw(r.exitButton.img, r.exitButton.x - r.hoverShift, r.exitButton.y - r.hoverShift, 0, 1 * r.buttonScale * r.buttonScale, 1 * r.buttonScale * r.hoverScale)
     else
-        love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1, 1)
+        love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1 * r.buttonScale, 1 * r.buttonScale)
     end
 
     if r.resumeButton.isHovered then
         -- hover effect
-        love.graphics.draw(r.resumeButton.img, r.resumeButton.x, r.resumeButton.y, 0, 1, 1)
-    else
-        love.graphics.draw(r.resumeButton.img, r.resumeButton.x, r.resumeButton.y, 0, 1, 1)
+        love.graphics.draw(r.resumeButton.img, r.resumeButton.x - r.hoverShift, r.resumeButton.y - r.hoverShift, 0, 1 * r.buttonScale * r.hoverScale, 1 * r.buttonScale * r.hoverScale)
+    elseif Background ~= nil then
+        love.graphics.draw(r.resumeButton.img, r.resumeButton.x, r.resumeButton.y, 0, 1 * r.buttonScale, 1 * r.buttonScale)
     end
     Cam:detach()
 end

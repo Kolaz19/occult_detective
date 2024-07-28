@@ -1,9 +1,9 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game').new(1, {})
+local game = require('game').new(4, {})
 local gameFinished = false
-local maxVolumeMusic = 0.5
+local maxVolumeMusic = 0.4
 ShapeIdentifier = 0
 
 local function getRandomVariant()
@@ -151,7 +151,9 @@ local function music(dt)
     else
 	if hoveredShape.formVariant == FORM_VARIANTS.policeBadge then
 	    Music.main.badgeLevel = Music.main.badgeLevel + dt
-	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte then
+	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte
+	    or hoveredShape.formVariant == FORM_VARIANTS.cultist
+	    or hoveredShape.formVariant == FORM_VARIANTS.cultAmulet then
 	    Music.main.suspectLevel = Music.main.suspectLevel + dt
 	else
 	    Music.main.itemLevel = Music.main.itemLevel + dt
@@ -178,6 +180,7 @@ local function music(dt)
 
     Music.main.suspect:setVolume(Music.main.suspectLevel)
     Music.main.badge:setVolume(Music.main.badgeLevel)
+    Music.main.item:setVolume(Music.main.itemLevel)
 end
 
 
@@ -256,9 +259,9 @@ function r:draw()
 
     if gameFinished then
         love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale / 2 - 650,
-            r.backgroundHeight * r.backgroundScale / 2 - 500, 0, 4, 4)
-        love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale / 2 - 250,
-            r.backgroundHeight * r.backgroundScale / 2 - 300, 0, 6, 6)
+            r.backgroundHeight * r.backgroundScale / 2 - 600, 0, 4, 4)
+        love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale / 2 - 280,
+            r.backgroundHeight * r.backgroundScale / 2 - 400, 0, 2, 2)
     else
         for _, shapeInstance in ipairs(game.rounds.providedShapes) do
             shapeInstance:draw()
@@ -267,8 +270,8 @@ function r:draw()
             shapeInstance:draw()
         end
 	love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
-	love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 3, 3)
-	love.graphics.print("Round "..game.currentRound.."/"..game.maxRoundCount, 80 , 50, 0, 3, 3)
+	love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 1, 1)
+	love.graphics.print("Round "..game.currentRound.."/"..game.maxRoundCount, 80 , 50, 0, 1.5, 1.5)
     end
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
