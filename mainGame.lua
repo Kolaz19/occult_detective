@@ -1,7 +1,7 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game').new(4, {})
+local game = require('game').new(1, {})
 local gameFinished = false
 local maxVolumeMusic = 0.4
 ShapeIdentifier = 0
@@ -30,6 +30,12 @@ function r:init()
     --Set screen to max size
     Background = love.graphics.newImage("assets/Spielfeld.jpg")
     ScorePlate = love.graphics.newImage("assets/Score.png")
+
+    Clipboard0 = love.graphics.newImage("assets/Clipboard3000.png")
+    Clipboard3000 = love.graphics.newImage("assets/Clipboard5000.png")
+    Clipboard5000 = love.graphics.newImage("assets/Clipboard6000.png")
+    Clipboard6000 = love.graphics.newImage("assets/Clipboard10000.png")
+
     r.backgroundWidth = Background:getWidth()
     r.backgroundHeight = Background:getHeight()
     local camConf = require 'cam'
@@ -253,6 +259,20 @@ function r:update(dt)
     game.world:update(dt)
 end
 
+local function drawRewardBoard()
+    local boardToDraw = nil
+    if game.score >= 6000 then
+	boardToDraw = Clipboard6000
+    elseif game.score >= 5000 then
+	boardToDraw = Clipboard5000
+    elseif game.score >= 3000 then
+	boardToDraw = Clipboard3000
+    else
+	boardToDraw = Clipboard0
+    end
+    love.graphics.draw(boardToDraw, 1120, 600, 0, 2.5, 2.5)
+end
+
 function r:draw()
     Cam:attach()
     love.graphics.draw(Background, 0, 0, 0, r.backgroundScale, r.backgroundScale)
@@ -262,6 +282,7 @@ function r:draw()
             r.backgroundHeight * r.backgroundScale / 2 - 600, 0, 4, 4)
         love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale / 2 - 280,
             r.backgroundHeight * r.backgroundScale / 2 - 400, 0, 2, 2)
+	    drawRewardBoard()
     else
         for _, shapeInstance in ipairs(game.rounds.providedShapes) do
             shapeInstance:draw()
