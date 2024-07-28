@@ -24,7 +24,7 @@ FORM_VARIANTS = {
 			local score = 0
 
 			for _, connectedShape in ipairs(shape.connections) do
-				if (shape.formVariant == FORM_VARIANTS.cultAmulet) then
+				if (connectedShape.formVariant == FORM_VARIANTS.cultAmulet) then
 					score = score + 30
 				end
 			end
@@ -85,7 +85,7 @@ FORM_VARIANTS = {
 		connectionLimit = 3,
 		reach = 150,
 		radius = 30,
-		shiftX = 50,
+		shiftX = 55,
 		shiftY = 60,
 		score = function(shape)
 			-- pro cultist + 100
@@ -103,7 +103,7 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		img = love.graphics.newImage("assets/Badge.png"),
 		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	audioTape = {
@@ -149,7 +149,7 @@ FORM_VARIANTS = {
 		connectionLimit = 2,
 		reach = 150,
 		radius = 30,
-		shiftX = 50,
+		shiftX = 60,
 		shiftY = 60,
 		score = function(shape)
 			-- je acolyte + 100
@@ -163,7 +163,7 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		img = love.graphics.newImage("assets/PatroneV2.png"),
 		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	cultAmulet = {
@@ -185,7 +185,7 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		img = love.graphics.newImage("assets/MedaillonV2.png"),
 		hint = love.graphics.newImage("assets/Notiz1.png")
 	}
 }
