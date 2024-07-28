@@ -108,6 +108,7 @@ function r:update(dt)
     --Update status und position of shapes
     --Update placed shapes
     for _, value in ipairs(game.placedShapes) do
+	value:updateStatus(dt)
         value:updatePos()
     end
     if #(game.rounds.providedShapes) == 0 then
@@ -117,7 +118,7 @@ function r:update(dt)
 	local activeShape = nil
 	for _, value in ipairs(game.rounds.providedShapes) do
 	    if value.isActive then
-		if (value:updateStatus()) then
+		if (value:updateStatus(dt)) then
 		    activeShape = value
 		end
 	    end
@@ -126,7 +127,7 @@ function r:update(dt)
 	--Only one should be the active shape
 	if not activeShape then
 	    for _, value in ipairs(game.rounds.providedShapes) do
-		if (value:updateStatus()) then
+		if (value:updateStatus(dt)) then
 		    break
 		end
 	    end
@@ -158,7 +159,6 @@ function r:update(dt)
 	    end
 	end
     end
-
 
     game.world:update(dt)
 end
