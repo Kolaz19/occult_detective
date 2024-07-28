@@ -11,6 +11,16 @@ end
 KEYS = { LSHIFT = 'lshift', W = 'w', A = 'a', S = 's', D = 'd', ESC = 'escape' }
 DEBUG = true
 Gamestate = require 'lib.gamestate'
+Music = {
+    intro = love.audio.newSource("assets/GameJamIntro.mp3","static"),
+    main = {
+	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
+	badge = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
+	suspect = love.audio.newSource("assets/GameJamMainLoop.mp3","static")
+    },
+    mainGame = false
+}
+Cam = require('cam').initCam()
 
 function love.load()
     require('formVariants')
@@ -25,9 +35,11 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
 
     TitleScreen = require('titleScreen')
-    MainGame = require('mainGame')
     TitleScreen.windowScale = windowScale
     TitleScreen.maxWindowHeight = maxWindowHeight
+    MainGame = require('mainGame')
+    MainGame.windowScale = windowScale
+    MainGame.maxWindowHeight = maxWindowHeight
     Gamestate.registerEvents()
     Gamestate.switch(TitleScreen)
 end

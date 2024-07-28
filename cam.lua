@@ -7,11 +7,15 @@ local r = {
     vecLastFrame = vec.new(0, 0)
 }
 
----Setup cam
----@return table Camera
-function r.setupCam(maxWindowHeight,backgroundHeight, backgroundScale)
+
+function r.initCam()
     local camera = require 'lib.camera'
     local cam = camera()
+    return cam
+end
+
+---Setup cam
+function r.setupCam(maxWindowHeight,backgroundHeight, backgroundScale)
     r.maxWindowHeight = maxWindowHeight
     r.backgroundHeight = backgroundHeight
     r.backgroundScale = backgroundScale
@@ -23,14 +27,15 @@ function r.setupCam(maxWindowHeight,backgroundHeight, backgroundScale)
     --Cam:lookAt(shiftX, (16 * 16)/2)
     Cam:lookAt(shiftX, shiftY)
     --]]
-    return cam
 end
 
 ---Adjust cam to window size
 ---so that the same ratio is kept
 ---@return boolean r.fullscreen Game is fullscreen
-function r:adjustCamToWindow()
-    r.fullscreen = not r.fullscreen
+function r:adjustCamToWindow(noSwitch)
+    if noSwitch == nil then
+	r.fullscreen = not r.fullscreen
+    end
     local scale = r.maxWindowHeight  / r.backgroundHeight / r.backgroundScale
     if not r.fullscreen then
         scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale

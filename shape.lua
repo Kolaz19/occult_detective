@@ -2,7 +2,7 @@ local shape = {}
 local vector = require 'lib.vector'
 shape.__index = shape
 --Seconds until popup shows
-local hintCounterLimit = 0.5
+local hintCounterLimit = 0.3
 
 function shape:initPhysics(world)
     self.physicsObject = {
@@ -14,7 +14,6 @@ function shape:initPhysics(world)
     self.physicsObject.fixture:setSensor(true)
 end
 
----comment
 ---@param formVariant table
 ---@param world table physics world
 ---@return table
@@ -190,12 +189,19 @@ function shape:drawScore(backgroundSize)
     love.graphics.setColor(1, 1, 1)
 end
 
-function shape:draw()
-    local scaleImg = 0.3
-    local scaleShift = 0
+function shape:drawHint()
     if self.hintTimeCounter >= hintCounterLimit then
         love.graphics.draw(self.formVariant.hint, 1900, 160, 0, 3, 3)
     end
+end
+
+function shape:destroyShape()
+    self.physicsObject.body:destroy()
+end
+
+function shape:draw()
+    local scaleImg = 0.3
+    local scaleShift = 0
     if self.scoreCalcLeft > 0 then
         love.graphics.setColor(love.math.colorFromBytes(102, 255, 102))
     elseif self.scoreCalcLeft < 0 then

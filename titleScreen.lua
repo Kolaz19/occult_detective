@@ -18,6 +18,7 @@ local r = {
     },
 }
 
+
 local function setHoverState(button, mouseX, mouseY)
     if (mouseX >= button.x and mouseX <= button.x + button.img:getWidth()) and
         (mouseY >= button.y and mouseY <= button.y + button.img:getHeight()) then
@@ -40,15 +41,17 @@ function r:init()
     r.exitButton.x = TitleScreenBackground:getWidth() / 2
     r.exitButton.y = TitleScreenBackground:getHeight() / 2 + 350
 
+    local camConfig = require('cam')
 
-    TitleScreenCam = require('cam').setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
-    TitleScreenCam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
+    camConfig.setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
+    Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
     local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
-    TitleScreenCam:zoom(scale)
+    Cam:zoom(scale)
+    camConfig.adjustCamToWindow(Cam,false)
 end
 
 function r:update(dt)
-    local x, y = TitleScreenCam:worldCoords(love.mouse.getPosition())
+    local x, y = Cam:worldCoords(love.mouse.getPosition())
 
     setHoverState(r.startButton, x, y)
     setHoverState(r.exitButton, x, y)
@@ -65,12 +68,12 @@ end
 function r:keypressed(key)
     if key == 'f' then
         local camConfig = require 'cam'
-        love.window.setFullscreen(camConfig.adjustCamToWindow(TitleScreenCam))
+        love.window.setFullscreen(camConfig.adjustCamToWindow(Cam))
     end
 end
 
 function r:draw()
-    TitleScreenCam:attach()
+    Cam:attach()
     love.graphics.draw(TitleScreenBackground, 0, 0, 0, r.backgroundScale, r.backgroundScale)
 
     if r.startButton.isHovered then
@@ -88,11 +91,11 @@ function r:draw()
         love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1, 1)
     end
 
-    TitleScreenCam:detach()
+    Cam:detach()
 end
 
 function r:enter()
-
+print("enter")
 end
 
 return r
