@@ -1,7 +1,7 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game').new(4, {})
+local game = require('game').new(1, {})
 local gameFinished = false
 ShapeIdentifier = 0
 

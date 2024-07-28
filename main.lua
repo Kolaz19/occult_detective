@@ -36,6 +36,7 @@ function love.load()
     local windowScale = 0.8
     love.window.setMode(maxWindowWidth * windowScale, maxWindowHeight * windowScale)
     love.graphics.setDefaultFilter("nearest", "nearest")
+    --love.graphics.setNewFont("assets/ConfessionFontRegular.ttf",15)
 
     TitleScreen = require('titleScreen')
     TitleScreen.windowScale = windowScale
