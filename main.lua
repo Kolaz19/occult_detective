@@ -12,11 +12,11 @@ KEYS = { LSHIFT = 'lshift', W = 'w', A = 'a', S = 's', D = 'd', ESC = 'escape' }
 DEBUG = true
 Gamestate = require 'lib.gamestate'
 Music = {
-    intro = love.audio.newSource("assets/GameJamIntro.mp3","static"),
+    intro = love.audio.newSource("assets/GameJamIntro.mp3", "static"),
     main = {
-	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
-	badge = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
-	suspect = love.audio.newSource("assets/GameJamMainLoop.mp3","static")
+        main = love.audio.newSource("assets/GameJamMainLoop.mp3", "static"),
+        badge = love.audio.newSource("assets/GameJamMainLoop.mp3", "static"),
+        suspect = love.audio.newSource("assets/GameJamMainLoop.mp3", "static")
     },
     mainGame = false
 }
@@ -45,7 +45,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-    if key == KEYS.ESC then
-        love.event.quit(0)
+    if Gamestate.current() ~= MainGame and key == KEYS.ESC then
+        Gamestate.switch(TitleScreen)
     end
 end

@@ -4,6 +4,13 @@ local r = {
     backgroundWidth = 0,
     backgroundHeight = 0,
     backgroundScale = 1.5,
+    resumeButton = {
+        img = {},
+        x = 0,
+        y = 0,
+        isHovered = false,
+        isDisplayed = false
+    },
     startButton = {
         img = {},
         x = 0,
@@ -33,13 +40,17 @@ function r:init()
     r.backgroundWidth = TitleScreenBackground:getWidth()
     r.backgroundHeight = TitleScreenBackground:getHeight()
 
+    r.resumeButton.img = love.graphics.newImage("assets/PatroneV2.png")
+    r.resumeButton.x = TitleScreenBackground:getWidth() / 2
+    r.resumeButton.y = TitleScreenBackground:getHeight() / 2
+
     r.startButton.img = love.graphics.newImage("assets/Notiz1.png")
     r.startButton.x = TitleScreenBackground:getWidth() / 2
-    r.startButton.y = TitleScreenBackground:getHeight() / 2
+    r.startButton.y = TitleScreenBackground:getHeight() / 2 + 350
 
     r.exitButton.img = love.graphics.newImage("assets/ZeitungV2.png")
     r.exitButton.x = TitleScreenBackground:getWidth() / 2
-    r.exitButton.y = TitleScreenBackground:getHeight() / 2 + 350
+    r.exitButton.y = TitleScreenBackground:getHeight() / 2 + 750
 
     local camConfig = require('cam')
 
@@ -47,7 +58,7 @@ function r:init()
     Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
     local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
     Cam:zoom(scale)
-    camConfig.adjustCamToWindow(Cam,false)
+    camConfig.adjustCamToWindow(Cam, false)
 end
 
 function r:update(dt)
@@ -55,6 +66,14 @@ function r:update(dt)
 
     setHoverState(r.startButton, x, y)
     setHoverState(r.exitButton, x, y)
+
+    if r.resumeButton.isDisplayed then
+        setHoverState(r.resumeButton, x, y)
+    end
+
+    if r.resumeButton.isHovered and love.mouse.isDown(1) then
+        Gamestate.switch(MainGame)
+    end
 
     if r.startButton.isHovered and love.mouse.isDown(1) then
         Gamestate.switch(MainGame)
@@ -96,8 +115,8 @@ end
 
 function r:enter()
     if love.audio.getActiveSourceCount() == 0 then
-	Music.intro:play()
-	Music.intro:setLooping(true)
+        Music.intro:play()
+        Music.intro:setLooping(true)
     end
 end
 
