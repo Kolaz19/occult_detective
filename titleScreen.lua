@@ -95,7 +95,10 @@ function r:draw()
 end
 
 function r:enter()
-print("enter")
+    if love.audio.getActiveSourceCount() == 0 then
+	Music.intro:play()
+	Music.intro:setLooping(true)
+    end
 end
 
 return r

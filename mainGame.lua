@@ -105,14 +105,8 @@ local function initGame()
     game.rounds = round.new(generateShapes(7, game.world))
 end
 
-local function music()
-    if love.audio.getActiveSourceCount() == 0 then
-        Music.main.main:play()
-    end
-end
 
 function r:update(dt)
-    music()
 
     if gameFinished == true then
         if love.mouse.isDown(1) then
@@ -217,7 +211,15 @@ function r:draw()
 end
 
 function r:enter(previous)
-
+    if  Music.intro:isPlaying() then
+	Music.intro:setLooping(false)
+    else
+	Music.main.main:play()
+	Music.main.badge:play()
+	Music.main.badge:setVolume(0)
+	Music.main.suspect:play()
+	Music.main.suspect:setVolume(0)
+    end
 end
 
 return r
