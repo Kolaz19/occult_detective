@@ -1,7 +1,7 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game').new(1, {})
+local game = require('game').new(5, {})
 local gameFinished = false
 ShapeIdentifier = 0
 
@@ -117,15 +117,24 @@ local function music(dt)
 	Music.main.suspect:setLooping(true)
     end
 
-    local activeShape = nil
+    local hoveredShape = nil
     for _,value in ipairs(game.rounds.providedShapes) do
-	if value.isActive  then
-	    activeShape = value
+	if value.isActive or value.hintTimeCounter > 0 then
+	    hoveredShape = value
 	    break
 	end
     end
 
-    if activeShape == nil then
+    if hoveredShape == nil then
+	for _,value in ipairs(game.placedShapes) do
+	    if  value.hintTimeCounter > 0 then
+		hoveredShape = value
+		break
+	    end
+	end
+    end
+
+    if hoveredShape == nil then
 	if Music.main.badgeLevel > 0 then
 	    Music.main.badgeLevel = Music.main.badgeLevel - dt
 	end
@@ -133,10 +142,10 @@ local function music(dt)
 	    Music.main.suspectLevel = Music.main.suspectLevel - dt
 	end
     else
-	if activeShape.formVariant == FORM_VARIANTS.policeBadge then
+	if hoveredShape.formVariant == FORM_VARIANTS.policeBadge then
 	    Music.main.badgeLevel = Music.main.badgeLevel + dt
-	elseif activeShape.formVariant == FORM_VARIANTS.acolyte
-	    or activeShape.formVariant == FORM_VARIANTS.acolyte then
+	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte
+	    or hoveredShape.formVariant == FORM_VARIANTS.acolyte then
 	    Music.main.suspectLevel = Music.main.suspectLevel + dt
 	end
     end
@@ -155,7 +164,6 @@ local function music(dt)
 
     Music.main.suspect:setVolume(Music.main.suspectLevel)
     Music.main.badge:setVolume(Music.main.badgeLevel)
-    print(Music.main.badgeLevel)
 end
 
 

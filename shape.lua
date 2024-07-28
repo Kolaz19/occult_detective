@@ -64,9 +64,9 @@ end
 local function setPositionForProvided(self, index, backgroundWidth, backgroundHeight)
     --Calculate base position
     self.pos.x = (Cam.x + 1900 - backgroundWidth) / 2
-    self.pos.y = (Cam.y + 600 + backgroundHeight) / 2
+    self.pos.y = (Cam.y + 500 + backgroundHeight) / 2
     --Offset based on index
-    self.pos.x = self.pos.x + (150 * (index - 1))
+    self.pos.x = self.pos.x + (200 * (index - 1))
     self.physicsObject.body:setPosition(self.pos.x, self.pos.y)
 end
 

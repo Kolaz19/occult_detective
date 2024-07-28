@@ -8,8 +8,7 @@ local r = {
         img = {},
         x = 0,
         y = 0,
-        isHovered = false,
-        isDisplayed = false
+        isHovered = false
     },
     startButton = {
         img = {},
@@ -44,11 +43,11 @@ function r:init()
     r.resumeButton.x = TitleScreenBackground:getWidth() / 2
     r.resumeButton.y = TitleScreenBackground:getHeight() / 2
 
-    r.startButton.img = love.graphics.newImage("assets/Notiz1.png")
+    r.startButton.img = love.graphics.newImage("assets/PatroneV2.png")
     r.startButton.x = TitleScreenBackground:getWidth() / 2
     r.startButton.y = TitleScreenBackground:getHeight() / 2 + 350
 
-    r.exitButton.img = love.graphics.newImage("assets/ZeitungV2.png")
+    r.exitButton.img = love.graphics.newImage("assets/PatroneV2.png")
     r.exitButton.x = TitleScreenBackground:getWidth() / 2
     r.exitButton.y = TitleScreenBackground:getHeight() / 2 + 750
 
@@ -67,7 +66,7 @@ function r:update(dt)
     setHoverState(r.startButton, x, y)
     setHoverState(r.exitButton, x, y)
 
-    if r.resumeButton.isDisplayed then
+    if Background ~= nil then
         setHoverState(r.resumeButton, x, y)
     end
 
@@ -76,6 +75,7 @@ function r:update(dt)
     end
 
     if r.startButton.isHovered and love.mouse.isDown(1) then
+	MainGame:init()
         Gamestate.switch(MainGame)
     end
 

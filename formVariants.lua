@@ -3,24 +3,24 @@ FORM_VARIANTS = {
 		id = 1,
 		connectionLimit = 4,
 		reach = 100,
-		radius = 30,
+		radius = 35,
 		scale = 1.0,
-		shiftX = 60,
-		shiftY = 60,
+		shiftX = 75,
+		shiftY = 90,
 		score = function()
 			return 0
 		end,
-		img = love.graphics.newImage("assets/PolaroidV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		img = love.graphics.newImage("assets/Acolyte2V2.png"),
+		hint = love.graphics.newImage("assets/NotizAcolyte.png")
 	},
 	cultist = {
 		id = 2,
 		connectionLimit = 2,
 		reach = 100,
-		radius = 30,
+		radius = 35,
 		scale = 1.0,
-		shiftX = 60,
-		shiftY = 60,
+		shiftX = 75,
+		shiftY = 90,
 		score = function(shape)
 			-- + 30 pro Medallie
 			local score = 0
@@ -33,17 +33,17 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/PolaroidV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		img = love.graphics.newImage("assets/KultistV2.png"),
+		hint = love.graphics.newImage("assets/NotizCultist.png")
 	},
 	newspaperTopHalf = {
 		id = 3,
 		connectionLimit = 2,
 		reach = 150,
-		radius = 30,
-		scale = 1.0,
-		shiftX = 50,
-		shiftY = 60,
+		radius = 35,
+		scale = 1.3,
+		shiftX = 60,
+		shiftY = 70,
 		score = function(shape)
 			local score = 0
 
@@ -60,17 +60,17 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		img = love.graphics.newImage("assets/Zeitung1V2.png"),
+		hint = love.graphics.newImage("assets/NotizNewspaperTopHalf.png")
 	},
 	newspaperBottomHalf = {
 		id = 4,
 		connectionLimit = 2,
 		reach = 150,
-		radius = 30,
-		scale = 1.0,
-		shiftX = 50,
-		shiftY = 60,
+		radius = 35,
+		scale = 1.2,
+		shiftX = 110,
+		shiftY = 110,
 		score = function(shape)
 			local score = 0
 
@@ -81,15 +81,15 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		img = love.graphics.newImage("assets/Zeitung_2V2.png"),
+		hint = love.graphics.newImage("assets/NotizNewspaperBottomHalf.png")
 	},
 	policeBadge = {
 		id = 5,
 		connectionLimit = 3,
 		reach = 150,
-		radius = 30,
-		scale = 1.15,
+		radius = 35,
+		scale = 1.25,
 		shiftX = 70,
 		shiftY = 70,
 		score = function(shape)
@@ -109,16 +109,16 @@ FORM_VARIANTS = {
 			return score
 		end,
 		img = love.graphics.newImage("assets/Badge.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		hint = love.graphics.newImage("assets/NotizPoliceBadge.png")
 	},
 	audioTape = {
 		id = 6,
 		connectionLimit = 1,
 		reach = 150,
-		radius = 30,
-		scale = 1.0,
-		shiftX = 50,
-		shiftY = 60,
+		radius = 35,
+		scale = 1.5,
+		shiftX = 112,
+		shiftY = 70,
 		score = function(shape)
 			-- je ganze Zeitung + 150
 			local score = 0
@@ -147,17 +147,17 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		img = love.graphics.newImage("assets/KassetteV2.png"),
+		hint = love.graphics.newImage("assets/NotizAudioCassette.png")
 	},
 	shotgunShell = {
 		id = 7,
 		connectionLimit = 2,
 		reach = 150,
-		radius = 30,
-		scale = 1.0,
-		shiftX = 60,
-		shiftY = 60,
+		radius = 35,
+		scale = 1.3,
+		shiftX = 80,
+		shiftY = 80,
 		score = function(shape)
 			-- je acolyte + 100
 			local score = 0
@@ -171,14 +171,14 @@ FORM_VARIANTS = {
 			return score
 		end,
 		img = love.graphics.newImage("assets/PatroneV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		hint = love.graphics.newImage("assets/NotizShotgunShell.png")
 	},
 	cultAmulet = {
 		id = 8,
 		connectionLimit = 1,
 		reach = 150,
-		radius = 30,
-		scale = 1.15,
+		radius = 35,
+		scale = 1.2,
 		shiftX = 70,
 		shiftY = 70,
 		score = function(shape)
@@ -194,7 +194,7 @@ FORM_VARIANTS = {
 			return score
 		end,
 		img = love.graphics.newImage("assets/MedaillonV2.png"),
-		hint = love.graphics.newImage("assets/Notiz1.png")
+		hint = love.graphics.newImage("assets/NotizAmulette.png")
 	}
 }
 

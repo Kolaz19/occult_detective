@@ -17,6 +17,7 @@ Music = {
 	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
 	badge = love.audio.newSource("assets/PoliceBadgeLoop.mp3","static"),
 	badgeLevel = 0.0,
+	--TEST
 	suspect = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
 	suspectLevel = 0.0
     },
@@ -47,7 +48,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-    if Gamestate.current() ~= MainGame and key == KEYS.ESC then
+    if Gamestate.current() ~= TitleScreen and key == KEYS.ESC then
         Gamestate.switch(TitleScreen)
     end
 end
