@@ -36,7 +36,7 @@ local function setHoverState(button, mouseX, mouseY)
 end
 
 function r:init()
-    TitleScreenBackground = love.graphics.newImage("assets/Spielfeld.png")
+    TitleScreenBackground = love.graphics.newImage("assets/Spielfeld.jpg")
     r.backgroundWidth = TitleScreenBackground:getWidth()
     r.backgroundHeight = TitleScreenBackground:getHeight()
 

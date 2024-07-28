@@ -224,14 +224,18 @@ function shape:draw()
         self.formVariant.scale * scaleImg)
     love.graphics.setColor(1, 1, 1)
 
+    --[[
     love.graphics.circle("fill",
         self.physicsObject.body:getX(),
         self.physicsObject.body:getY(),
         self.physicsObject.shape:getRadius())
+	--]]
 
     for _, con in ipairs(self.connections) do
         if con.isActive or self.isActive then
-            love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
+            --love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
+	else
+            love.graphics.setColor(love.math.colorFromBytes(153, 0, 0))
         end
         love.graphics.line(self.pos.x, self.pos.y, con.pos.x, con.pos.y)
         love.graphics.setColor(1, 1, 1)

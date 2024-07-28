@@ -14,9 +14,11 @@ Gamestate = require 'lib.gamestate'
 Music = {
     intro = love.audio.newSource("assets/GameJamIntro.mp3", "static"),
     main = {
-        main = love.audio.newSource("assets/GameJamMainLoop.mp3", "static"),
-        badge = love.audio.newSource("assets/GameJamMainLoop.mp3", "static"),
-        suspect = love.audio.newSource("assets/GameJamMainLoop.mp3", "static")
+	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
+	badge = love.audio.newSource("assets/PoliceBadgeLoop.mp3","static"),
+	badgeLevel = 0.0,
+	suspect = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
+	suspectLevel = 0.0
     },
     mainGame = false
 }

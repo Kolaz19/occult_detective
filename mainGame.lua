@@ -105,9 +105,63 @@ local function initGame()
     game.rounds = round.new(generateShapes(7, game.world))
 end
 
+local function music(dt)
+    if not Music.intro:isPlaying() then
+	Music.main.main:play()
+	Music.main.main:setLooping(true)
+	Music.main.badge:play()
+	Music.main.badge:setVolume(0)
+	Music.main.badge:setLooping(true)
+	Music.main.suspect:play()
+	Music.main.suspect:setVolume(0)
+	Music.main.suspect:setLooping(true)
+    end
+
+    local activeShape = nil
+    for _,value in ipairs(game.rounds.providedShapes) do
+	if value.isActive  then
+	    activeShape = value
+	    break
+	end
+    end
+
+    if activeShape == nil then
+	if Music.main.badgeLevel > 0 then
+	    Music.main.badgeLevel = Music.main.badgeLevel - dt
+	end
+	if Music.main.suspectLevel > 0 then
+	    Music.main.suspectLevel = Music.main.suspectLevel - dt
+	end
+    else
+	if activeShape.formVariant == FORM_VARIANTS.policeBadge then
+	    Music.main.badgeLevel = Music.main.badgeLevel + dt
+	elseif activeShape.formVariant == FORM_VARIANTS.acolyte
+	    or activeShape.formVariant == FORM_VARIANTS.acolyte then
+	    Music.main.suspectLevel = Music.main.suspectLevel + dt
+	end
+    end
+
+    if Music.main.suspectLevel < 0 then
+	Music.main.suspectLevel = 0
+    elseif Music.main.suspectLevel > 1 then
+	Music.main.suspectLevel = 1
+    end
+
+    if Music.main.badgeLevel < 0 then
+	Music.main.badgeLevel = 0
+    elseif Music.main.badgeLevel > 1 then
+	Music.main.badgeLevel = 1
+    end
+
+    Music.main.suspect:setVolume(Music.main.suspectLevel)
+    Music.main.badge:setVolume(Music.main.badgeLevel)
+    print(Music.main.badgeLevel)
+end
+
 
 function r:update(dt)
 
+    music(dt)
     if gameFinished == true then
         if love.mouse.isDown(1) then
             initGame()
@@ -199,12 +253,12 @@ function r:draw()
                 shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
             end
         end
-        for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-            shapeInstance:drawHint()
-        end
-        for _, shapeInstance in ipairs(game.placedShapes) do
-            shapeInstance:drawHint()
-        end
+    end
+    for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+	shapeInstance:drawHint()
+    end
+    for _, shapeInstance in ipairs(game.placedShapes) do
+	shapeInstance:drawHint()
     end
     Cam:detach()
     --Draw score
@@ -213,12 +267,6 @@ end
 function r:enter(previous)
     if  Music.intro:isPlaying() then
 	Music.intro:setLooping(false)
-    else
-	Music.main.main:play()
-	Music.main.badge:play()
-	Music.main.badge:setVolume(0)
-	Music.main.suspect:play()
-	Music.main.suspect:setVolume(0)
     end
 end
 
