@@ -1,7 +1,7 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
-local game = require('game').new(5, {})
+local game = require('game').new(4, {})
 local gameFinished = false
 ShapeIdentifier = 0
 
@@ -94,7 +94,7 @@ function r:endRound()
     end
 end
 
-local function initGame()
+function r:initGame()
     game.score = 0
     gameFinished = false
     game.currentRound = 1
@@ -244,7 +244,7 @@ function r:draw()
         love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale / 2 - 650,
             r.backgroundHeight * r.backgroundScale / 2 - 500, 0, 4, 4)
         love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale / 2 - 250,
-            r.backgroundHeight * r.backgroundScale / 2 - 300, 0, 8, 8)
+            r.backgroundHeight * r.backgroundScale / 2 - 300, 0, 6, 6)
     else
         for _, shapeInstance in ipairs(game.rounds.providedShapes) do
             shapeInstance:draw()
@@ -252,9 +252,9 @@ function r:draw()
         for _, shapeInstance in ipairs(game.placedShapes) do
             shapeInstance:draw()
         end
+	love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
+	love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 3, 3)
     end
-    love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
-    love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 3, 3)
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
             if shapeInstance.scoreCalcLeft ~= 0 then
@@ -262,11 +262,14 @@ function r:draw()
             end
         end
     end
-    for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	shapeInstance:drawHint()
-    end
-    for _, shapeInstance in ipairs(game.placedShapes) do
-	shapeInstance:drawHint()
+
+    if not gameFinished then
+	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+	    shapeInstance:drawHint()
+	end
+	for _, shapeInstance in ipairs(game.placedShapes) do
+	    shapeInstance:drawHint()
+	end
     end
     Cam:detach()
     --Draw score

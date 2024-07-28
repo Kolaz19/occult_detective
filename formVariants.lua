@@ -27,7 +27,7 @@ FORM_VARIANTS = {
 
 			for _, connectedShape in ipairs(shape.connections) do
 				if (connectedShape.formVariant == FORM_VARIANTS.cultAmulet) then
-					score = score + 30
+					score = score + 100
 				end
 			end
 

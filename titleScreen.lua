@@ -75,7 +75,7 @@ function r:update(dt)
     end
 
     if r.startButton.isHovered and love.mouse.isDown(1) then
-	MainGame:init()
+	MainGame:initGame()
         Gamestate.switch(MainGame)
     end
 
