@@ -36,7 +36,7 @@ function r:init()
     Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
     local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
     Cam:zoom(scale)
-    camConf.adjustCamToWindow(Cam,false)
+    camConf.adjustCamToWindow(Cam, false)
 
 
     ---@diagnostic disable-next-line: need-check-nil
@@ -86,11 +86,11 @@ function r:endRound()
             shapeInstance.scoreCalculated = false
         end
         game.currentRound = game.currentRound + 1
-	if game.currentRound > game.maxRoundCount then
-	    gameFinished = true
-	else
-	    game.rounds = round.new(generateShapes(7, game.world))
-	end
+        if game.currentRound > game.maxRoundCount then
+            gameFinished = true
+        else
+            game.rounds = round.new(generateShapes(7, game.world))
+        end
     end
 end
 
@@ -98,16 +98,16 @@ local function initGame()
     game.score = 0
     gameFinished = false
     game.currentRound = 1
-    for index,shapeToDestroy in ipairs(game.placedShapes) do
-	shapeToDestroy:destroyShape()
-	game.placedShapes[index] = nil
+    for index, shapeToDestroy in ipairs(game.placedShapes) do
+        shapeToDestroy:destroyShape()
+        game.placedShapes[index] = nil
     end
     game.rounds = round.new(generateShapes(7, game.world))
 end
 
 local function music()
     if love.audio.getActiveSourceCount() == 0 then
-	Music.main.main:play()
+        Music.main.main:play()
     end
 end
 
@@ -115,11 +115,11 @@ function r:update(dt)
     music()
 
     if gameFinished == true then
-	if love.mouse.isDown(1) then
-	    initGame()
-	end
+        if love.mouse.isDown(1) then
+            initGame()
+        end
 
-	return
+        return
     end
 
     --Update status und position of shapes
@@ -182,20 +182,20 @@ end
 
 function r:draw()
     Cam:attach()
-    love.graphics.draw(Background,0,0,0, r.backgroundScale, r.backgroundScale)
+    love.graphics.draw(Background, 0, 0, 0, r.backgroundScale, r.backgroundScale)
 
     if gameFinished then
-	love.graphics.draw(ScorePlate,r.backgroundWidth*r.backgroundScale /2 - 650, r.backgroundHeight*r.backgroundScale /2 - 500 ,0, 4, 4)
-	love.graphics.print("Score: " .. game.score, r.backgroundWidth*r.backgroundScale /2 -250, r.backgroundHeight*r.backgroundScale /2 - 300, 0, 8, 8)
-
+        love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale / 2 - 650,
+            r.backgroundHeight * r.backgroundScale / 2 - 500, 0, 4, 4)
+        love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale / 2 - 250,
+            r.backgroundHeight * r.backgroundScale / 2 - 300, 0, 8, 8)
     else
-
-	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	    shapeInstance:draw()
-	end
-	for _, shapeInstance in ipairs(game.placedShapes) do
-	    shapeInstance:draw()
-	end
+        for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+            shapeInstance:draw()
+        end
+        for _, shapeInstance in ipairs(game.placedShapes) do
+            shapeInstance:draw()
+        end
     end
     love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
     love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 3, 3)
@@ -205,12 +205,12 @@ function r:draw()
                 shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
             end
         end
-	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	    shapeInstance:drawHint()
-	end
-	for _, shapeInstance in ipairs(game.placedShapes) do
-	    shapeInstance:drawHint()
-	end
+        for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+            shapeInstance:drawHint()
+        end
+        for _, shapeInstance in ipairs(game.placedShapes) do
+            shapeInstance:drawHint()
+        end
     end
     Cam:detach()
     --Draw score
