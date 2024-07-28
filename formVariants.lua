@@ -9,7 +9,8 @@ FORM_VARIANTS = {
 		score = function()
 			return 0
 		end,
-		img = love.graphics.newImage("assets/PolaroidV2.png")
+		img = love.graphics.newImage("assets/PolaroidV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	cultist = {
 		id = 2,
@@ -30,7 +31,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/PolaroidV2.png")
+		img = love.graphics.newImage("assets/PolaroidV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	newspaperTopHalf = {
 		id = 3,
@@ -55,7 +57,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	newspaperBottomHalf = {
 		id = 4,
@@ -74,7 +77,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	policeBadge = {
 		id = 5,
@@ -99,7 +103,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	audioTape = {
 		id = 6,
@@ -136,7 +141,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	shotgunShell = {
 		id = 7,
@@ -157,7 +163,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	},
 	cultAmulet = {
 		id = 8,
@@ -178,7 +185,8 @@ FORM_VARIANTS = {
 
 			return score
 		end,
-		img = love.graphics.newImage("assets/ZeitungV2.png")
+		img = love.graphics.newImage("assets/ZeitungV2.png"),
+		hint = love.graphics.newImage("assets/Notiz1.png")
 	}
 }
 

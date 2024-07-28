@@ -110,53 +110,53 @@ function r:update(dt)
     for _, value in ipairs(game.placedShapes) do
         value:updatePos()
     end
-    --Update provided shapes
-    local activeShape = nil
-    for _, value in ipairs(game.rounds.providedShapes) do
-        if value.isActive then
-            if (value:updateStatus()) then
-                activeShape = value
-            end
-        end
-    end
-
-    --Only one should be the active shape
-    if not activeShape then
-        for _, value in ipairs(game.rounds.providedShapes) do
-            if (value:updateStatus()) then
-                break
-            end
-        end
-    end
-
-    for index, value in ipairs(game.rounds.providedShapes) do
-        value:updatePos(index, r.backgroundWidth*r.backgroundScale, r.backgroundHeight*r.backgroundScale)
-    end
-
-    --Move provided shapes into placed shapes
-    local elemtToSwitch = 0
-    for key, val in ipairs(game.rounds.providedShapes) do
-        if val.wasDropped == true then
-            elemtToSwitch = key
-        end
-    end
-    table.insert(game.placedShapes, game.rounds.providedShapes[elemtToSwitch])
-    table.remove(game.rounds.providedShapes, elemtToSwitch)
-
-    --Combine places shapes
-    if activeShape ~= nil then activeShape:removeConnections() end
-    for _, val in ipairs(game.placedShapes) do
-        if activeShape ~= nil then activeShape:addConnection(val) end
-        val:removeConnections()
-        for _, valIn in ipairs(game.placedShapes) do
-            if val ~= valIn then
-                val:addConnection(valIn)
-            end
-        end
-    end
-
     if #(game.rounds.providedShapes) == 0 then
         self:endRound()
+    else
+	--Update provided shapes
+	local activeShape = nil
+	for _, value in ipairs(game.rounds.providedShapes) do
+	    if value.isActive then
+		if (value:updateStatus()) then
+		    activeShape = value
+		end
+	    end
+	end
+
+	--Only one should be the active shape
+	if not activeShape then
+	    for _, value in ipairs(game.rounds.providedShapes) do
+		if (value:updateStatus()) then
+		    break
+		end
+	    end
+	end
+
+	for index, value in ipairs(game.rounds.providedShapes) do
+	    value:updatePos(index, r.backgroundWidth*r.backgroundScale, r.backgroundHeight*r.backgroundScale)
+	end
+
+	--Move provided shapes into placed shapes
+	local elemtToSwitch = 0
+	for key, val in ipairs(game.rounds.providedShapes) do
+	    if val.wasDropped == true then
+		elemtToSwitch = key
+	    end
+	end
+	table.insert(game.placedShapes, game.rounds.providedShapes[elemtToSwitch])
+	table.remove(game.rounds.providedShapes, elemtToSwitch)
+
+	--Combine places shapes
+	if activeShape ~= nil then activeShape:removeConnections() end
+	for _, val in ipairs(game.placedShapes) do
+	    if activeShape ~= nil then activeShape:addConnection(val) end
+	    val:removeConnections()
+	    for _, valIn in ipairs(game.placedShapes) do
+		if val ~= valIn then
+		    val:addConnection(valIn)
+		end
+	    end
+	end
     end
 
 
