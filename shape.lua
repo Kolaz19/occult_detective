@@ -64,8 +64,8 @@ end
 
 local function setPositionForProvided(self, index, backgroundWidth, backgroundHeight)
     --Calculate base position
-    self.pos.x = ( Cam.x + 1900 - backgroundWidth) / 2
-    self.pos.y = ( Cam.y + 600 + backgroundHeight) / 2
+    self.pos.x = (Cam.x + 1900 - backgroundWidth) / 2
+    self.pos.y = (Cam.y + 600 + backgroundHeight) / 2
     --Offset based on index
     self.pos.x = self.pos.x + (150 * (index - 1))
     self.physicsObject.body:setPosition(self.pos.x, self.pos.y)
@@ -82,11 +82,11 @@ end
 
 function shape:updateStatus(dt)
     if not love.mouse.isDown(1) and isMouseInsideShape(self) then
-	if self.hintTimeCounter < hintCounterLimit then
-	    self.hintTimeCounter = self.hintTimeCounter + dt
-	end
+        if self.hintTimeCounter < hintCounterLimit then
+            self.hintTimeCounter = self.hintTimeCounter + dt
+        end
     else
-	self.hintTimeCounter = 0
+        self.hintTimeCounter = 0
     end
 
     if self.isPlaced then return end
@@ -194,28 +194,28 @@ function shape:draw()
     local scaleImg = 0.3
     local scaleShift = 0
     if self.hintTimeCounter >= hintCounterLimit then
-	love.graphics.draw(self.formVariant.hint,1900,160,0,3,3)
+        love.graphics.draw(self.formVariant.hint, 1900, 160, 0, 3, 3)
     end
     if self.scoreCalcLeft > 0 then
         love.graphics.setColor(love.math.colorFromBytes(102, 255, 102))
     elseif self.scoreCalcLeft < 0 then
         love.graphics.setColor(love.math.colorFromBytes(255, 102, 102))
     elseif self.hintTimeCounter > 0 then
-	--Highlight object when mouse hovered
+        --Highlight object when mouse hovered
         love.graphics.setColor(love.math.colorFromBytes(255, 255, 153))
     end
 
     if self.isActive == true then
-	scaleImg = 0.35
-	scaleShift = 10
+        scaleImg = 0.35
+        scaleShift = 10
     end
 
     love.graphics.draw(self.formVariant.img,
-			self.pos.x - self.formVariant.shiftX - scaleShift,
-			self.pos.y - self.formVariant.shiftY - scaleShift,
-			0,
-			scaleImg,
-			scaleImg)
+        self.pos.x - self.formVariant.shiftX - scaleShift,
+        self.pos.y - self.formVariant.shiftY - scaleShift,
+        0,
+        scaleImg,
+        scaleImg)
     love.graphics.setColor(1, 1, 1)
     --[[
     love.graphics.circle("fill",

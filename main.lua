@@ -10,7 +10,7 @@ end
 
 KEYS = { LSHIFT = 'lshift', W = 'w', A = 'a', S = 's', D = 'd', ESC = 'escape' }
 DEBUG = true
-local Gamestate = require 'lib.gamestate'
+Gamestate = require 'lib.gamestate'
 
 function love.load()
     require('formVariants')
@@ -24,14 +24,15 @@ function love.load()
     love.window.setMode(maxWindowWidth * windowScale, maxWindowHeight * windowScale)
     love.graphics.setDefaultFilter("nearest", "nearest")
 
-    local mainGame = require('mainGame')
-    mainGame.windowScale = windowScale
-    mainGame.maxWindowHeight = maxWindowHeight
+    TitleScreen = require('titleScreen')
+    MainGame = require('mainGame')
+    TitleScreen.windowScale = windowScale
+    TitleScreen.maxWindowHeight = maxWindowHeight
     Gamestate.registerEvents()
-    Gamestate.switch(mainGame)
+    Gamestate.switch(TitleScreen)
 end
 
-function love.keypressed(key, scancode, isrepeat)
+function love.keypressed(key)
     if key == KEYS.ESC then
         love.event.quit(0)
     end
