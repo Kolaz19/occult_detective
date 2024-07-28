@@ -205,12 +205,12 @@ function r:draw()
                 shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
             end
         end
-	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	    shapeInstance:drawHint()
-	end
-	for _, shapeInstance in ipairs(game.placedShapes) do
-	    shapeInstance:drawHint()
-	end
+    end
+    for _, shapeInstance in ipairs(game.rounds.providedShapes) do
+	shapeInstance:drawHint()
+    end
+    for _, shapeInstance in ipairs(game.placedShapes) do
+	shapeInstance:drawHint()
     end
     Cam:detach()
     --Draw score
