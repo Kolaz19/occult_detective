@@ -168,13 +168,13 @@ function shape:subScore()
     end
 end
 
-function shape:drawScore()
+function shape:drawScore(backgroundSize)
     if self.scoreCalcLeft > 0 then
         love.graphics.setColor(love.math.colorFromBytes(0, 255, 0))
     else
         love.graphics.setColor(love.math.colorFromBytes(255, 0, 0))
     end
-    love.graphics.print(self.scoreCalcLeft, 1875, 60, 0, 3, 3)
+    love.graphics.print(self.scoreCalcLeft, backgroundSize - 315, 120, 0, 3, 3)
     love.graphics.setColor(1, 1, 1)
 end
 

@@ -95,6 +95,7 @@ function r:endRound()
         for _, shapeInstance in ipairs(game.placedShapes) do
             shapeInstance.scoreCalculated = false
         end
+	game.currentRound = game.currentRound + 1
         game.rounds = round.new(generateShapes(7, game.world))
     end
 end
@@ -165,19 +166,18 @@ end
 function r:draw()
     Cam:attach()
     love.graphics.draw(Background,0,0,0, r.backgroundScale, r.backgroundScale)
-    love.graphics.rectangle("line", 0, 0, 50, 50)
     for _, shapeInstance in ipairs(game.rounds.providedShapes) do
         shapeInstance:draw()
     end
     for _, shapeInstance in ipairs(game.placedShapes) do
         shapeInstance:draw()
     end
-    love.graphics.draw(ScorePlate,r.backgroundWidth*r.backgroundScale - 450,-30,0, 1.4, 1.8)
-    love.graphics.print("Score: " .. game.score, r.backgroundWidth*r.backgroundScale - 300, 50, 0, 3, 3)
+    love.graphics.draw(ScorePlate,r.backgroundWidth*r.backgroundScale - 650,-10,0, 2.2, 1.3)
+    love.graphics.print("Score: " .. game.score, r.backgroundWidth*r.backgroundScale - 440, 50, 0, 3, 3)
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
             if shapeInstance.scoreCalcLeft ~= 0 then
-                shapeInstance:drawScore()
+                shapeInstance:drawScore(r.backgroundWidth*r.backgroundScale)
             end
         end
     end

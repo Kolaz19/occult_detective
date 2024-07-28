@@ -121,8 +121,8 @@ FORM_VARIANTS = {
 			end
 
 			for _, newspaperHalf in ipairs(newspaperShapes) do
-				if (#(newspaperHalf.connectedShapes) > 1) then
-					for __, newspaperHalfConnectedShape in ipairs(newspaperHalf.connectedShapes) do
+				if (#(newspaperHalf.connections) > 1) then
+					for __, newspaperHalfConnectedShape in ipairs(newspaperHalf.connections) do
 						if (newspaperHalf.formVariant == FORM_VARIANTS.newspaperBottomHalf and
 								newspaperHalfConnectedShape.formVariant == FORM_VARIANTS.newspaperTopHalf) then
 							score = score + 150
