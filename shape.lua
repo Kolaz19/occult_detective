@@ -220,14 +220,14 @@ function shape:draw()
         self.pos.x - self.formVariant.shiftX - scaleShift,
         self.pos.y - self.formVariant.shiftY - scaleShift,
         0,
-        scaleImg,
-        scaleImg)
+        self.formVariant.scale * scaleImg,
+        self.formVariant.scale * scaleImg)
     love.graphics.setColor(1, 1, 1)
 
-    -- love.graphics.circle("fill",
-    --     self.physicsObject.body:getX(),
-    --     self.physicsObject.body:getY(),
-    --     self.physicsObject.shape:getRadius())
+    love.graphics.circle("fill",
+        self.physicsObject.body:getX(),
+        self.physicsObject.body:getY(),
+        self.physicsObject.shape:getRadius())
 
     for _, con in ipairs(self.connections) do
         if con.isActive or self.isActive then

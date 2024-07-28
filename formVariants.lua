@@ -89,9 +89,9 @@ FORM_VARIANTS = {
 		connectionLimit = 3,
 		reach = 150,
 		radius = 30,
-		scale = 1.1,
-		shiftX = 55,
-		shiftY = 60,
+		scale = 1.15,
+		shiftX = 70,
+		shiftY = 70,
 		score = function(shape)
 			-- pro cultist + 100
 			-- pro acolyte + 50
@@ -178,9 +178,9 @@ FORM_VARIANTS = {
 		connectionLimit = 1,
 		reach = 150,
 		radius = 30,
-		scale = 1.1,
-		shiftX = 50,
-		shiftY = 60,
+		scale = 1.15,
+		shiftX = 70,
+		shiftY = 70,
 		score = function(shape)
 			-- je cultist + 200
 			local score = 0
