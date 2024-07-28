@@ -110,6 +110,7 @@ function shape:updateStatus(dt)
                 self.connections[key] = nil
             end
         else
+	    Music.pin:play()
             self.isPlaced = true
             self.physicsObject.fixture:setSensor(false)
             self.wasDropped = true

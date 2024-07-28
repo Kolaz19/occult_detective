@@ -3,6 +3,7 @@ local shape = require('shape')
 local round = require('round')
 local game = require('game').new(1, {})
 local gameFinished = false
+local maxVolumeMusic = 0.5
 ShapeIdentifier = 0
 
 local function getRandomVariant()
@@ -106,7 +107,7 @@ function r:initGame()
 end
 
 local function music(dt)
-    if not Music.intro:isPlaying() then
+    if love.audio.getActiveSourceCount() == 0 then
 	Music.main.main:play()
 	Music.main.main:setLooping(true)
 	Music.main.badge:play()
@@ -115,6 +116,9 @@ local function music(dt)
 	Music.main.suspect:play()
 	Music.main.suspect:setVolume(0)
 	Music.main.suspect:setLooping(true)
+	Music.main.item:play()
+	Music.main.item:setVolume(0)
+	Music.main.item:setLooping(true)
     end
 
     local hoveredShape = nil
@@ -141,25 +145,35 @@ local function music(dt)
 	if Music.main.suspectLevel > 0 then
 	    Music.main.suspectLevel = Music.main.suspectLevel - dt
 	end
+	if Music.main.itemLevel > 0 then
+	    Music.main.itemLevel = Music.main.itemLevel - dt
+	end
     else
 	if hoveredShape.formVariant == FORM_VARIANTS.policeBadge then
 	    Music.main.badgeLevel = Music.main.badgeLevel + dt
-	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte
-	    or hoveredShape.formVariant == FORM_VARIANTS.acolyte then
+	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte then
 	    Music.main.suspectLevel = Music.main.suspectLevel + dt
+	else
+	    Music.main.itemLevel = Music.main.itemLevel + dt
 	end
     end
 
     if Music.main.suspectLevel < 0 then
 	Music.main.suspectLevel = 0
-    elseif Music.main.suspectLevel > 1 then
-	Music.main.suspectLevel = 1
+    elseif Music.main.suspectLevel > maxVolumeMusic then
+	Music.main.suspectLevel = maxVolumeMusic
     end
 
     if Music.main.badgeLevel < 0 then
 	Music.main.badgeLevel = 0
-    elseif Music.main.badgeLevel > 1 then
-	Music.main.badgeLevel = 1
+    elseif Music.main.badgeLevel > maxVolumeMusic then
+	Music.main.badgeLevel = maxVolumeMusic
+    end
+
+    if Music.main.itemLevel < 0 then
+	Music.main.itemLevel = 0
+    elseif Music.main.itemLevel > maxVolumeMusic then
+	Music.main.itemLevel = maxVolumeMusic
     end
 
     Music.main.suspect:setVolume(Music.main.suspectLevel)
@@ -172,7 +186,7 @@ function r:update(dt)
     music(dt)
     if gameFinished == true then
         if love.mouse.isDown(1) then
-            initGame()
+            r:initGame()
         end
 
         return
@@ -254,6 +268,7 @@ function r:draw()
         end
 	love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
 	love.graphics.print("Score: " .. game.score, r.backgroundWidth * r.backgroundScale - 440, 50, 0, 3, 3)
+	love.graphics.print("Round "..game.currentRound.."/"..game.maxRoundCount, 80 , 50, 0, 3, 3)
     end
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
@@ -276,6 +291,12 @@ function r:draw()
 end
 
 function r:enter(previous)
+    local camConfig = require 'cam'
+    camConfig.setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
+    Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
+    local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
+    Cam:zoom(scale)
+    camConfig.adjustCamToWindow(Cam, false)
     if  Music.intro:isPlaying() then
 	Music.intro:setLooping(false)
     end

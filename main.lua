@@ -12,14 +12,19 @@ KEYS = { LSHIFT = 'lshift', W = 'w', A = 'a', S = 's', D = 'd', ESC = 'escape' }
 DEBUG = true
 Gamestate = require 'lib.gamestate'
 Music = {
-    intro = love.audio.newSource("assets/GameJamIntro.mp3", "static"),
+    intro = love.audio.newSource("assets/GameJamIntro.wav", "static"),
+    pin = love.audio.newSource("assets/PinSound.wav", "static"),
     main = {
 	main = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
-	badge = love.audio.newSource("assets/PoliceBadgeLoop.mp3","static"),
+
+	badge = love.audio.newSource("assets/PoliceBadgeLoop.wav","static"),
 	badgeLevel = 0.0,
-	--TEST
-	suspect = love.audio.newSource("assets/GameJamMainLoop.mp3","static"),
-	suspectLevel = 0.0
+
+	suspect = love.audio.newSource("assets/VerbrecherLoop.wav","static"),
+	suspectLevel = 0.0,
+
+	item = love.audio.newSource("assets/GegenstandLoop.wav","static"),
+	itemLevel = 0.0
     },
     mainGame = false
 }
@@ -36,6 +41,7 @@ function love.load()
     local windowScale = 0.8
     love.window.setMode(maxWindowWidth * windowScale, maxWindowHeight * windowScale)
     love.graphics.setDefaultFilter("nearest", "nearest")
+    love.audio.setVolume(0.5)
     --love.graphics.setNewFont("assets/ConfessionFontRegular.ttf",15)
 
     TitleScreen = require('titleScreen')

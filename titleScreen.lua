@@ -4,22 +4,23 @@ local r = {
     backgroundWidth = 0,
     backgroundHeight = 0,
     backgroundScale = 1.5,
+    buttonScale = 1.3,
     resumeButton = {
         img = {},
-        x = 0,
-        y = 0,
+        x = 2000,
+        y = 600,
         isHovered = false
     },
     startButton = {
         img = {},
-        x = 0,
-        y = 0,
+        x = 1300,
+        y = 500,
         isHovered = false
     },
     exitButton = {
         img = {},
-        x = 0,
-        y = 0,
+        x = 1400,
+        y = 900,
         isHovered = false
     },
 }
@@ -35,21 +36,13 @@ local function setHoverState(button, mouseX, mouseY)
 end
 
 function r:init()
-    TitleScreenBackground = love.graphics.newImage("assets/Spielfeld.jpg")
+    TitleScreenBackground = love.graphics.newImage("assets/Titlescreen.jpg")
     r.backgroundWidth = TitleScreenBackground:getWidth()
     r.backgroundHeight = TitleScreenBackground:getHeight()
 
-    r.resumeButton.img = love.graphics.newImage("assets/PatroneV2.png")
-    r.resumeButton.x = TitleScreenBackground:getWidth() / 2
-    r.resumeButton.y = TitleScreenBackground:getHeight() / 2
-
-    r.startButton.img = love.graphics.newImage("assets/PatroneV2.png")
-    r.startButton.x = TitleScreenBackground:getWidth() / 2
-    r.startButton.y = TitleScreenBackground:getHeight() / 2 + 350
-
-    r.exitButton.img = love.graphics.newImage("assets/PatroneV2.png")
-    r.exitButton.x = TitleScreenBackground:getWidth() / 2
-    r.exitButton.y = TitleScreenBackground:getHeight() / 2 + 750
+    r.resumeButton.img = love.graphics.newImage("assets/Resume.png")
+    r.startButton.img = love.graphics.newImage("assets/NEW Game.png")
+    r.exitButton.img = love.graphics.newImage("assets/Exit.png")
 
     local camConfig = require('cam')
 
@@ -61,6 +54,10 @@ function r:init()
 end
 
 function r:update(dt)
+    if love.audio.getActiveSourceCount() == 0 then
+        Music.intro:play()
+        Music.intro:setLooping(true)
+    end
     local x, y = Cam:worldCoords(love.mouse.getPosition())
 
     setHoverState(r.startButton, x, y)
@@ -70,7 +67,7 @@ function r:update(dt)
         setHoverState(r.resumeButton, x, y)
     end
 
-    if r.resumeButton.isHovered and love.mouse.isDown(1) then
+    if r.resumeButton.isHovered and love.mouse.isDown(1) and Background ~= nil then
         Gamestate.switch(MainGame)
     end
 
@@ -98,22 +95,33 @@ function r:draw()
     if r.startButton.isHovered then
         -- hover effect
         love.graphics.draw(r.startButton.img, r.startButton.x, r.startButton.y, 0, 1, 1)
-        love.graphics.print('blubStart', 50, 50, 0, 3.0, 3.0)
     else
         love.graphics.draw(r.startButton.img, r.startButton.x, r.startButton.y, 0, 1, 1)
     end
+
     if r.exitButton.isHovered then
         -- hover effect
         love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1, 1)
-        love.graphics.print('blubExit', 50, 50, 0, 3.0, 3.0)
     else
         love.graphics.draw(r.exitButton.img, r.exitButton.x, r.exitButton.y, 0, 1, 1)
     end
 
+    if r.resumeButton.isHovered then
+        -- hover effect
+        love.graphics.draw(r.resumeButton.img, r.resumeButton.x, r.resumeButton.y, 0, 1, 1)
+    else
+        love.graphics.draw(r.resumeButton.img, r.resumeButton.x, r.resumeButton.y, 0, 1, 1)
+    end
     Cam:detach()
 end
 
 function r:enter()
+    local camConfig = require 'cam'
+    camConfig.setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
+    Cam:lookAt(r.backgroundWidth * r.backgroundScale / 2, r.backgroundHeight * r.backgroundScale / 2)
+    local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
+    Cam:zoom(scale)
+    camConfig.adjustCamToWindow(Cam, false)
     if love.audio.getActiveSourceCount() == 0 then
         Music.intro:play()
         Music.intro:setLooping(true)

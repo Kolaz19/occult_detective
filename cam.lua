@@ -19,14 +19,6 @@ function r.setupCam(maxWindowHeight,backgroundHeight, backgroundScale)
     r.maxWindowHeight = maxWindowHeight
     r.backgroundHeight = backgroundHeight
     r.backgroundScale = backgroundScale
-    --cam:zoomTo(1)
-    --cam:lookAt()
-    --[[
-    local shiftX = windowWidth / scaleY / 2
-    local shiftY = (30 - 16  + (16/2)) * 16
-    --Cam:lookAt(shiftX, (16 * 16)/2)
-    Cam:lookAt(shiftX, shiftY)
-    --]]
 end
 
 ---Adjust cam to window size
