@@ -69,7 +69,7 @@ end
 
 local function isUnderThresholdScreen(self)
     local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
-    if curMousePos.y > Cam.y + 250 then
+    if curMousePos.y > Cam.y + 500 then
         return true
     else
         return false
@@ -197,7 +197,7 @@ function shape:draw()
     --]]
     for _, con in ipairs(self.connections) do
         if con.isActive or self.isActive then
-            love.graphics.setColor(love.math.colorFromBytes(255, 0, 255))
+            love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
         end
         love.graphics.line(self.pos.x, self.pos.y, con.pos.x, con.pos.y)
         love.graphics.setColor(1, 1, 1)

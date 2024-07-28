@@ -38,6 +38,7 @@ end
 function r:init()
     --Set screen to max size
     Background = love.graphics.newImage("assets/Spielfeld.png")
+    ScorePlate = love.graphics.newImage("assets/Score.png")
     r.backgroundWidth = Background:getWidth()
     r.backgroundHeight = Background:getHeight()
     Cam = require('cam').setupCam(r.maxWindowHeight, r.backgroundHeight, r.backgroundScale)
@@ -171,10 +172,8 @@ function r:draw()
     for _, shapeInstance in ipairs(game.placedShapes) do
         shapeInstance:draw()
     end
-    Cam:detach()
-
-    --Draw score
-    love.graphics.print("Score: " .. game.score, 1750, 20, 0, 3, 3)
+    love.graphics.draw(ScorePlate,r.backgroundWidth*r.backgroundScale - 450,-30,0, 1.4, 1.8)
+    love.graphics.print("Score: " .. game.score, r.backgroundWidth*r.backgroundScale - 300, 50, 0, 3, 3)
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
             if shapeInstance.scoreCalcLeft ~= 0 then
@@ -182,6 +181,9 @@ function r:draw()
             end
         end
     end
+    Cam:detach()
+
+    --Draw score
 end
 
 function r:enter(previous)
