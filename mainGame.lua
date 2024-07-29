@@ -69,7 +69,7 @@ function r:endRound()
     --Continue counting score of chosen shape
     if shapeInstanceToCalc ~= nil then
         --Remove score from shape over time
-        game.score = game.score + shapeInstanceToCalc:subScore()
+        game.score = game.score + shapeInstanceToCalc:subScore(game.currentRound > 2)
     else
         --If no shape is chosen, choose new shape to count
         for _, shapeInstance in ipairs(game.placedShapes) do

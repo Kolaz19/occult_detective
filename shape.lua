@@ -167,16 +167,34 @@ function shape:addScoreToCount()
     end
 end
 
-function shape:subScore()
+function shape:subScore(fast)
+    local modifier = 0
+    if fast == true then
+	modifier = 1
+    end
+
     if self.scoreCalcLeft > 0 then
-        self.scoreCalcLeft = self.scoreCalcLeft - 1
-        if self.scoreCalcLeft == 0 then self.scoreCalculated = true end
-        return 1
+        self.scoreCalcLeft = self.scoreCalcLeft - 1 - modifier
+	if self.scoreCalcLeft == 0 then
+	    self.scoreCalculated = true
+	    return 1 + modifier
+	elseif self.scoreCalcLeft < 0 then
+	    self.scoreCalcLeft = 0
+	    self.scoreCalculated = true
+	    return 1
+	end
+	return 1 + modifier
     elseif self.scoreCalcLeft < 0 then
-        self.scoreCalcLeft = self.scoreCalcLeft + 1
-        if self.scoreCalcLeft == 0 then self.scoreCalculated = true end
-        return -1
-    else
+        self.scoreCalcLeft = self.scoreCalcLeft + 1 + modifier
+        if self.scoreCalcLeft == 0 then
+	    self.scoreCalculated = true
+	    return -1 - modifier
+	elseif self.scoreCalcLeft > 0 then
+	    self.scoreCalcLeft = 0
+	    self.scoreCalculated = true
+	    return -1
+	end
+	return -1 - modifier
     end
 end
 
