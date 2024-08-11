@@ -1,4 +1,9 @@
+require 'formVariants.formVariant'
+---@class shape
+---@field connections table
+---@field formVariant formVariant
 local shape = {}
+shape.connections = {}
 local vector = require 'lib.vector'
 shape.__index = shape
 --Seconds until popup shows
@@ -30,7 +35,6 @@ shape.new = function(formVariant, world)
     shapeInstance.height = formVariant.radius * 2
     shapeInstance.width = 0
     shapeInstance.pos = vector.new(0, 0)
-    shapeInstance.connections = {}
     shapeInstance.wasDropped = false
 
     shapeInstance.hintTimeCounter = 0

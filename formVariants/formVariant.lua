@@ -2,6 +2,7 @@
 local formVariant = {}
 formVariant.__index = formVariant
 
+formVariant.name = nil
 formVariant.iconImage = nil
 formVariant.hintImage = nil
 formVariant.connectionLimit = nil
@@ -10,7 +11,16 @@ formVariant.bodyRadius = nil
 formVariant.imgScale = 1
 formVariant.shiftX = 0
 formVariant.shiftY = 0
-formVariant.score = function() return 0 end
+---@diagnostic disable-next-line: unused-local
+formVariant.score = function(shape) return 0 end
+
+function formVariant:setScoreFunction(fun)
+    formVariant.score = fun
+end
+
+function formVariant:getScore(shape)
+    return formVariant.score(shape) + self.score(shape)
+end
 
 function formVariant:setImageParameters(scale, shiftX, shiftY)
     self.imgScale = scale
