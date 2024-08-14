@@ -15,7 +15,7 @@ formVariant.shiftY = 0
 formVariant.score = function(shape) return 0 end
 
 function formVariant:setScoreFunction(fun)
-    formVariant.score = fun
+    self.score = fun
 end
 
 function formVariant:getScore(shape)
@@ -36,6 +36,10 @@ function formVariant:new(connectionLimit, reach, bodyRadius, iconImagePath, hint
     new.iconImage = love.graphics.newImage(iconImagePath)
     new.hintImage = love.graphics.newImage(hintImagePath)
     return new
+end
+
+function formVariant:isVariant(variantName)
+    return variantName == self.name
 end
 
 setmetatable(formVariant,

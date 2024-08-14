@@ -1,5 +1,5 @@
-local formVariant = require 'formVariant'
-require 'formVariantPoolNames'
+local formVariant = require 'formVariants.formVariant'
+require 'formVariants.formVariantPoolNames'
 local generatorFunctions = {}
 generatorFunctions.generatedRef = {}
 
@@ -35,13 +35,13 @@ end
 
 generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf] = function()
     local new = formVariant:new(2, 150, 35, 'assets/Zeitung1V2.png', 'assets/NotizNewspaperTopHalf.png')
-    new:setImageParameters(1.0, 60, 70)
+    new:setImageParameters(1.3, 60, 70)
     return new
 end
 
 generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf] = function()
-    local new = formVariant:new(2, 150, 35, 'assets/Zeitung_2V2.png', 'assets/NotizNewspaperTopHalf.png')
-    new:setImageParameters(1.0, 60, 70)
+    local new = formVariant:new(2, 150, 35, 'assets/Zeitung_2V2.png', 'assets/NotizNewspaperBottomHalf.png')
+    new:setImageParameters(1.2, 110, 110)
     return new
 end
 
@@ -52,8 +52,8 @@ generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.policeBadge] = function()
 end
 
 generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.audioTape] = function()
-    local new = formVariant:new(3, 150, 35, 'assets/KassetteV2.png', 'assets/NotizAudioCassette.png')
-    new:setImageParameters(1.25, 70, 70)
+    local new = formVariant:new(1, 150, 35, 'assets/KassetteV2.png', 'assets/NotizAudioCassette.png')
+    new:setImageParameters(1.5, 112, 70)
     return new
 end
 

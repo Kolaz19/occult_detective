@@ -1,8 +1,8 @@
 local formVariantFactory = {created = {}}
-local scoreFunctions = require 'scoreFunction'
+local scoreFunctions = require 'formVariants.scoreFunction'
 scoreFunctions.createdObjectsRef = formVariantFactory.created
 
-local formVariantGeneratorFunctions = require 'formVariantGeneratorFunctions'
+local formVariantGeneratorFunctions = require 'formVariants.formVariantGeneratorFunctions'
 
 --If variant is not in created table,
 --create it with formVariantGeneratorFunctions-function
@@ -21,7 +21,7 @@ setmetatable(formVariantFactory.created,
     --Set score function when defined
     local scoreFunction = scoreFunctions[_k]
     if scoreFunction ~= nil then
-	self[_k].setScoreFunction(scoreFunction)
+	self[_k]:setScoreFunction(scoreFunction)
     end
     return self[_k]
 end})
@@ -32,7 +32,7 @@ function formVariantFactory.getRandomVariants(pools,amount)
     local amountOfVariants = 0
     --Count all available variants in given pools
     for _,pool in ipairs(pools) do
-	for _,_ in pairs(FORM_VARIANT_POOL_NAMES[pool]) do
+	for _,_ in pairs(pool) do
 	    amountOfVariants = amountOfVariants + 1
 	end
     end
@@ -42,7 +42,7 @@ function formVariantFactory.getRandomVariants(pools,amount)
 	indexCounter = 1
 	local randomIndex = love.math.random(amountOfVariants)
 	for _,pool in ipairs(pools) do
-	    for _,variant in pairs(FORM_VARIANT_POOL_NAMES[pool]) do
+	    for _,variant in pairs(pool) do
 		if indexCounter == randomIndex then
 		    --This will either get created variant 
 		    --or create it per metamethod

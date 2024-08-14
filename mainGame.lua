@@ -1,26 +1,17 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
 local shape = require('shape')
 local round = require('round')
+local shapeFactory = require 'formVariants.formVariantFactory'
 local game = require('game').new(4, {})
 local gameFinished = false
 local maxVolumeMusic = 0.4
 ShapeIdentifier = 0
 
-local function getRandomVariant()
-    local randomNumber = love.math.random(VARIANT_COUNT)
-
-    for index, value in pairs(FORM_VARIANTS) do
-        if (value.id == randomNumber) then
-            return FORM_VARIANTS[index]
-        end
-    end
-end
-
 local function generateShapes(amount, world)
     local shapes = {}
-    for i = 1, amount, 1 do
-        local newShape = shape.new(getRandomVariant(), world)
-        table.insert(shapes, newShape)
+    local variants = shapeFactory.getRandomVariants({FORM_VARIANT_POOL_NAMES.basic},amount)
+    for _,val in ipairs(variants) do
+	table.insert(shapes,shape.new(val,world))
     end
 
     return shapes
@@ -44,10 +35,6 @@ function r:init()
     local scale = r.maxWindowHeight * r.windowScale / r.backgroundHeight / r.backgroundScale
     Cam:zoom(scale)
     camConf.adjustCamToWindow(Cam, false)
-
-
-    ---@diagnostic disable-next-line: need-check-nil
-    game.rounds = round.new(generateShapes(7, game.world))
 end
 
 function r:keypressed(key)
@@ -155,11 +142,11 @@ local function music(dt)
 	    Music.main.itemLevel = Music.main.itemLevel - dt
 	end
     else
-	if hoveredShape.formVariant == FORM_VARIANTS.policeBadge then
+	if hoveredShape.formVariant:isVariant(FORM_VARIANT_POOL_NAMES.basic.policeBadge) then
 	    Music.main.badgeLevel = Music.main.badgeLevel + dt
-	elseif hoveredShape.formVariant == FORM_VARIANTS.acolyte
-	    or hoveredShape.formVariant == FORM_VARIANTS.cultist
-	    or hoveredShape.formVariant == FORM_VARIANTS.cultAmulet then
+	elseif hoveredShape.formVariant:isVariant(FORM_VARIANT_POOL_NAMES.basic.acolyte)
+	    or hoveredShape.formVariant:isVariant(FORM_VARIANT_POOL_NAMES.basic.cultist)
+	    or hoveredShape.formVariant:isVariant(FORM_VARIANT_POOL_NAMES.basic.cultAmulet) then
 	    Music.main.suspectLevel = Music.main.suspectLevel + dt
 	else
 	    Music.main.itemLevel = Music.main.itemLevel + dt
@@ -243,7 +230,7 @@ function r:update(dt)
         table.insert(game.placedShapes, game.rounds.providedShapes[elemtToSwitch])
         table.remove(game.rounds.providedShapes, elemtToSwitch)
 
-        --Combine places shapes
+        --Combine placed shapes
         if activeShape ~= nil then activeShape:removeConnections() end
         for _, val in ipairs(game.placedShapes) do
             if activeShape ~= nil then activeShape:addConnection(val) end

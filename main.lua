@@ -31,7 +31,6 @@ Music = {
 Cam = require('cam').initCam()
 
 function love.load()
-    require('formVariants')
     if DEBUG then
         io.stdout:setvbuf("no")
     end

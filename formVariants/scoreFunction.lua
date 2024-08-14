@@ -1,12 +1,11 @@
- require 'formVariantPoolNames'
- require '..shape'
+require 'formVariants.formVariantPoolNames'
 
- local scoreFunctions = {}
+local scoreFunctions = {}
 
- ---@param shape shape
- local function isVariant(shape,variantName)
-     return shape.formVariant.name == variantName
- end
+---@param shape shape
+local function isVariant(shape,variantName)
+    return shape.formVariant.name == variantName
+end
 
 ---@param shape shape
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultist] = function(shape)
@@ -14,7 +13,7 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultist] = function(shape)
     local score = 0
 
     for _, connectedShape in ipairs(shape.connections) do
-	if (isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.cultist)) then
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.cultAmulet)) then
 	    score = score + 30
 	end
     end
@@ -26,7 +25,7 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf] = function(shape)
     local score = 0
 
     for _, connectedShape in ipairs(shape.connections) do
-	if (isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf)) then
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf)) then
 	    score = score + 150
 	end
     end
@@ -55,10 +54,10 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.policeBadge] = function(shape)
     -- pro acolyte + 50
     local score = 0
     for _, connectedShape in ipairs(shape.connections) do
-	if (isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.cultist)) then
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.cultist)) then
 		score = score + 100
 	end
-	if (isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.acolyte)) then
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.acolyte )) then
 		score = score + 50
 	end
     end
@@ -72,8 +71,8 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.audioTape] = function(shape)
     local newspaperShapes = {}
 
     for _, connectedShape in ipairs(shape.connections) do
-	if (isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf) or
-	    isVariant(connectedShape, FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf)) then
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf) or
+	    connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf)) then
 	    table.insert(newspaperShapes, connectedShape)
 	end
     end
@@ -81,16 +80,41 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.audioTape] = function(shape)
     for _, newspaperHalf in ipairs(newspaperShapes) do
 	if (#(newspaperHalf.connections) > 1) then
 	    for _, newspaperHalfConnectedShape in ipairs(newspaperHalf.connections) do
-		if (isVariant(newspaperHalf, FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf) and
-		    isVariant(newspaperHalfConnectedShape, FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf)) then
+		if (newspaperHalf:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf) and
+		    newspaperHalfConnectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf)) then
 		    score = score + 150
-		elseif (isVariant(newspaperHalf, FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf) and
-			isVariant(newspaperHalfConnectedShape, FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf)) then
+		elseif (newspaperHalf:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf) and
+			newspaperHalfConnectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf)) then
 		    score = score + 150
 		end
 	    end
 	end
     end
+    return score
+end
+
+scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.shotgunShell] = function(shape)
+    -- je acolyte + 100
+    local score = 0
+    for _, connectedShape in ipairs(shape.connections) do
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.acolyte)) then
+	    score = score + 100
+	end
+    end
+
+    return score
+end
+
+scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultAmulet] = function(shape)
+    -- je cultist + 200
+    local score = 0
+
+    for _, connectedShape in ipairs(shape.connections) do
+	if (connectedShape:isVariant(FORM_VARIANT_POOL_NAMES.basic.cultist)) then
+	    score = score + 200
+	end
+    end
+
     return score
 end
 

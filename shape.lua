@@ -19,7 +19,7 @@ function shape:initPhysics(world)
     self.physicsObject.fixture:setSensor(true)
 end
 
----@param formVariant table
+---@param formVariant formVariant
 ---@param world table physics world
 ---@return table
 shape.new = function(formVariant, world)
@@ -32,17 +32,18 @@ shape.new = function(formVariant, world)
     shapeInstance.formVariant = formVariant
     shapeInstance.isPlaced = false
     shapeInstance.isActive = false
-    shapeInstance.height = formVariant.radius * 2
+    shapeInstance.height = formVariant.bodyRadius * 2
     shapeInstance.width = 0
     shapeInstance.pos = vector.new(0, 0)
     shapeInstance.wasDropped = false
+    shapeInstance.connections = {}
 
     shapeInstance.hintTimeCounter = 0
 
     shapeInstance.scoreCalculated = false
     shapeInstance.scoreCalcLeft = 0
 
-    shapeInstance:initPhysics(world, formVariant)
+    shapeInstance:initPhysics(world)
 
     return shapeInstance
 end
@@ -52,6 +53,10 @@ end
 local function followMouse(self)
     local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
     self.physicsObject.body:setPosition(curMousePos.x, curMousePos.y)
+end
+
+function shape:isVariant(variantName)
+    return self.formVariant:isVariant(variantName)
 end
 
 local function isMouseInsideShape(self)
@@ -214,7 +219,7 @@ end
 
 function shape:drawHint()
     if self.hintTimeCounter >= hintCounterLimit then
-        love.graphics.draw(self.formVariant.hint, 1900, 160, 0, 3, 3)
+        love.graphics.draw(self.formVariant.hintImage, 1900, 160, 0, 3, 3)
     end
 end
 
@@ -239,12 +244,12 @@ function shape:draw()
         scaleShift = 10
     end
 
-    love.graphics.draw(self.formVariant.img,
+    love.graphics.draw(self.formVariant.iconImage,
         self.pos.x - self.formVariant.shiftX - scaleShift,
         self.pos.y - self.formVariant.shiftY - scaleShift,
         0,
-        self.formVariant.scale * scaleImg,
-        self.formVariant.scale * scaleImg)
+        self.formVariant.imgScale * scaleImg,
+        self.formVariant.imgScale * scaleImg)
     love.graphics.setColor(1, 1, 1)
 
     --[[
