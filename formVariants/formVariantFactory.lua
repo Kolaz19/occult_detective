@@ -26,6 +26,11 @@ setmetatable(formVariantFactory.created,
     return self[_k]
 end})
 
+
+---Return random variants from specific pools
+---@param pools form_variant_names[] Pool names
+---@param amount integer
+---@return formVariant[]
 function formVariantFactory.getRandomVariants(pools,amount)
     local variants = {}
     local indexCounter = 1

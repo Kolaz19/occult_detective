@@ -1,14 +1,12 @@
 local formVariant = require 'formVariants.formVariant'
 require 'formVariants.formVariantPoolNames'
+
+--Hold one generator function for every formVariant
+--This will be used in factory
 local generatorFunctions = {}
-generatorFunctions.generatedRef = {}
 
 generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.acolyte] = function()
-    local new = formVariant:new(4,
-				100,
-				35,
-				'assets/Acolyte2V2.png',
-				'assets/NotizAcolyte.png')
+    local new = formVariant:new(4, 100, 35, 'assets/Acolyte2V2.png', 'assets/NotizAcolyte.png')
     new:setImageParameters(1.0, 75, 90)
     return new
 end
@@ -16,20 +14,6 @@ end
 generatorFunctions[FORM_VARIANT_POOL_NAMES.basic.cultist] = function()
     local new = formVariant:new(2, 100, 35, 'assets/KultistV2.png', 'assets/NotizCultist.png')
     new:setImageParameters(1.0, 75, 90)
-    new:setScoreFunction(
-	function(shape)
-	    -- + 30 pro Medallie
-	    local score = 0
-
-	    for _, connectedShape in ipairs(shape.connections) do
-		    if (connectedShape.formVariant == FORM_VARIANTS.cultAmulet) then
-			    score = score + 30
-		    end
-	    end
-
-	    return score
-	end
-    )
     return new
 end
 

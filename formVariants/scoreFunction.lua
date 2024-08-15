@@ -1,13 +1,11 @@
 require 'formVariants.formVariantPoolNames'
 
+--If form variant has a score function, define it here
+--A form doesn't have to have a score function
 local scoreFunctions = {}
 
 ---@param shape shape
-local function isVariant(shape,variantName)
-    return shape.formVariant.name == variantName
-end
-
----@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultist] = function(shape)
     -- + 30 pro Medallie
     local score = 0
@@ -21,6 +19,7 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultist] = function(shape)
 end
 
 ---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf] = function(shape)
     local score = 0
 
@@ -39,6 +38,7 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperTopHalf] = function(shape)
 end
 
 ---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf] = function(shape)
     local score = 0
     -- malus: newspaper is standing alone
@@ -49,6 +49,8 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.newsPaperBottomHalf] = function(sha
     return score
 end
 
+---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.policeBadge] = function(shape)
     -- pro cultist + 100
     -- pro acolyte + 50
@@ -65,6 +67,8 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.policeBadge] = function(shape)
     return score
 end
 
+---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.audioTape] = function(shape)
     -- je ganze Zeitung + 150
     local score = 0
@@ -93,6 +97,8 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.audioTape] = function(shape)
     return score
 end
 
+---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.shotgunShell] = function(shape)
     -- je acolyte + 100
     local score = 0
@@ -105,6 +111,8 @@ scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.shotgunShell] = function(shape)
     return score
 end
 
+---@param shape shape
+---@return integer score
 scoreFunctions[FORM_VARIANT_POOL_NAMES.basic.cultAmulet] = function(shape)
     -- je cultist + 200
     local score = 0
