@@ -5,7 +5,6 @@ local shapeFactory = require 'formVariants.formVariantFactory'
 local game = require('game').new(4, {})
 local gameFinished = false
 local maxVolumeMusic = 0.4
-ShapeIdentifier = 0
 
 local function generateShapes(amount, world)
     local shapes = {}

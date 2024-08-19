@@ -1,7 +1,5 @@
 require 'formVariants.formVariant'
----@class shape
----@field connections table
----@field formVariant formVariant
+---@class shapeI
 local shape = {}
 shape.connections = {}
 local vector = require 'lib.vector'
@@ -25,9 +23,6 @@ end
 shape.new = function(formVariant, world)
     local shapeInstance = {}
     setmetatable(shapeInstance, shape)
-
-    ShapeIdentifier = ShapeIdentifier + 1
-    shapeInstance.id = ShapeIdentifier
 
     shapeInstance.formVariant = formVariant
     shapeInstance.isPlaced = false
