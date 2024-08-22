@@ -12,7 +12,6 @@ local vector = require 'lib.vector'
 ---@field hintTimeCounter number
 ---@field scoreCalculated boolean
 ---@field scoreCalcLeft integer
---
 local shape = {}
 shape.__index = shape
 shape.connections = {}

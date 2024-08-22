@@ -20,10 +20,11 @@ end
 ---@param formVariant formVariant
 ---@param world table physics world
 ---@return table
-shape.new = function(formVariant, world)
+shape.new = function(formVariant, world, roundIndex)
     local shapeInstance = {}
     setmetatable(shapeInstance, shape)
 
+    shapeInstance.roundIndex = roundIndex
     shapeInstance.formVariant = formVariant
     shapeInstance.isPlaced = false
     shapeInstance.isActive = false
