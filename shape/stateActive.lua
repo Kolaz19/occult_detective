@@ -38,5 +38,18 @@ end,
 --Enter
 function(shape)
     shape.physicsObject.fixture:setSensor(true)
+end,
+
+--draw
+function(shape)
+    local scaleImg = 0.35
+    local scaleShift = 10
+    love.graphics.draw(shape.formVariant.iconImage,
+        shape.pos.x - shape.formVariant.shiftX - scaleShift,
+        shape.pos.y - shape.formVariant.shiftY - scaleShift,
+        0,
+        shape.formVariant.imgScale * scaleImg,
+        shape.formVariant.imgScale * scaleImg)
+    love.graphics.setColor(1, 1, 1)
 end
 )

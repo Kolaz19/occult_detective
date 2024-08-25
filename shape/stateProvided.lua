@@ -48,5 +48,18 @@ function(shape)
 	end
 	shape.connections[key] = nil
     end
+end,
+
+--draw
+function(shape)
+    local scaleImg = 0.3
+    local scaleShift = 0
+    love.graphics.draw(shape.formVariant.iconImage,
+        shape.pos.x - shape.formVariant.shiftX - scaleShift,
+        shape.pos.y - shape.formVariant.shiftY - scaleShift,
+        0,
+        shape.formVariant.imgScale * scaleImg,
+        shape.formVariant.imgScale * scaleImg)
+    love.graphics.setColor(1, 1, 1)
 end
 )
