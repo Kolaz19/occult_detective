@@ -33,6 +33,7 @@ end,
 --Update
 function(shape)
     followMouse(shape)
+    shapeState.removeConnectionsDistance(shape)
 end,
 
 --Enter

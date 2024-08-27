@@ -8,6 +8,7 @@ end,
 
 --Update
 function(shape)
+    shapeState.removeConnectionsDistance(shape)
 end,
 
 --Enter
