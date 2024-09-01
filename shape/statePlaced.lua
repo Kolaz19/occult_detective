@@ -37,5 +37,6 @@ function(shape)
         shape.formVariant.imgScale * scaleImg,
         shape.formVariant.imgScale * scaleImg)
     shapeState.drawLines(shape)
+    love.graphics.setColor(1, 1, 1)
 end
 )

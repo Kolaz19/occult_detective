@@ -38,6 +38,8 @@ end,
 
 --Enter
 function(shape)
+    local shapeClass = require 'shape.shapeNew'
+    shapeClass.currentActiveShape = shape
     shape.physicsObject.fixture:setSensor(true)
 end,
 

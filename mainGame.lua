@@ -1,5 +1,5 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
-local shape = require('shape')
+local shape = require('shape.shapeNew')
 local round = require('round')
 local shapeFactory = require 'formVariants.formVariantFactory'
 local game = require('game').new(4, {})
@@ -8,9 +8,11 @@ local maxVolumeMusic = 0.4
 
 local function generateShapes(amount, world)
     local shapes = {}
+    local roundIndex = 1
     local variants = shapeFactory.getRandomVariants({FORM_VARIANT_POOL_NAMES.basic},amount)
     for _,val in ipairs(variants) do
-	table.insert(shapes,shape.new(val,world))
+	table.insert(shapes,shape:new(val,world,roundIndex))
+	roundIndex = roundIndex + 1
     end
 
     return shapes
@@ -190,35 +192,45 @@ function r:update(dt)
     --Update status und position of shapes
     --Update placed shapes
     for _, value in ipairs(game.placedShapes) do
-        value:updateStatus(dt)
-        value:updatePos()
+        value:update(dt)
     end
     if #(game.rounds.providedShapes) == 0 then
         self:endRound()
-    else
-        --Update provided shapes
-        local activeShape = nil
-        for _, value in ipairs(game.rounds.providedShapes) do
-            if value.isActive then
-                if (value:updateStatus(dt)) then
-                    activeShape = value
-                end
-            end
-        end
+    end
+    --Only one should be the active shape
+    for _, value in ipairs(game.rounds.providedShapes) do
+	value:update(dt)
+    end
 
-        --Only one should be the active shape
-        if not activeShape then
-            for _, value in ipairs(game.rounds.providedShapes) do
-                if (value:updateStatus(dt)) then
-                    break
-                end
-            end
-        end
 
-        for index, value in ipairs(game.rounds.providedShapes) do
-            value:updatePos(index, r.backgroundWidth * r.backgroundScale, r.backgroundHeight * r.backgroundScale)
-        end
+    local indexToRemove = nil
+    local elementToRemove = nil
+    for key, value in ipairs(game.rounds.providedShapes) do
+	if value.currentState == ShapeStates.PLACED then
+	    indexToRemove = key
+	    elementToRemove = value
+	end
+    end
+    if elementToRemove ~= nil then
+	table.remove(game.rounds.providedShapes, indexToRemove)
+	table.insert(game.placedShapes, elementToRemove)
+    end
 
+    --Add connection
+    for _, value in ipairs(game.placedShapes) do
+	for _, valueIn in ipairs(game.placedShapes) do
+	    value:addConnection(valueIn)
+	end
+	for _, valueIn in ipairs(game.rounds.providedShapes) do
+	    if valueIn.currentState == ShapeStates.ACTIVE then
+		value:addConnection(valueIn)
+	    end
+	end
+    end
+
+
+
+    --[[
         --Move provided shapes into placed shapes
         local elemtToSwitch = 0
         for key, val in ipairs(game.rounds.providedShapes) do
@@ -241,6 +253,7 @@ function r:update(dt)
             end
         end
     end
+    --]]
 
     game.world:update(dt)
 end
@@ -283,17 +296,17 @@ function r:draw()
     if #(game.rounds.providedShapes) == 0 then
         for _, shapeInstance in ipairs(game.placedShapes) do
             if shapeInstance.scoreCalcLeft ~= 0 then
-                shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
+                --shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
             end
         end
     end
 
     if not gameFinished then
 	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	    shapeInstance:drawHint()
+	    --shapeInstance:drawHint()
 	end
 	for _, shapeInstance in ipairs(game.placedShapes) do
-	    shapeInstance:drawHint()
+	    --shapeInstance:drawHint()
 	end
     end
     Cam:detach()

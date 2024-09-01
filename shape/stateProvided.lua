@@ -4,8 +4,8 @@ local shapeState = require "shape.shapeState"
 
 local function setPositionForProvided(shape)
     --Calculate base position
-    shape.pos.x = (Cam.x + 1900 - 1920) / 2
-    shape.pos.y = (Cam.y + 500 + 1080) / 2
+    shape.pos.x = (1700 + 600 - 1920) / 2
+    shape.pos.y = (1000 + 900 + 1080) / 2
     --Offset based on index
     shape.pos.x = shape.pos.x + (200 * (shape.roundIndex - 1))
     shape.physicsObject.body:setPosition(shape.pos.x, shape.pos.y)

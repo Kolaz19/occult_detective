@@ -14,14 +14,14 @@ require 'shape.globalShapeStates'
 ---@field scoreCalculated boolean
 ---@field scoreCalcLeft integer
 ---@field currentState shapeState
+---@field roundIndex integer
+---@field currentActiveShape shape
 local shape = {}
 shape.__index = shape
-shape.currentState = ShapeStates.PROVIDED
-shape.pos = vector.new(0, 0)
 --Seconds until popup shows
 local hintCounterLimit = 0.3
 
-function shape:new(formVariant, world)
+function shape:new(formVariant, world, roundIndex)
     local new = setmetatable({}, shape)
 
     new.formVariant = formVariant
@@ -35,8 +35,11 @@ function shape:new(formVariant, world)
     new.hintTimeCounter = 0
     new.scoreCalculated = false
     new.scoreCalcLeft = 0
-
     new:initPhysics(world)
+    new.roundIndex = roundIndex
+    new.currentState = ShapeStates.PROVIDED
+    new.currentState.enter(new)
+
     return new
 end
 
@@ -76,9 +79,9 @@ end
 
 function shape:isMouseInsideShape()
     local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
-    local distance = shape.pos:dist(curMousePos)
+    local distance = self.pos:dist(curMousePos)
 
-    if distance < shape.physicsObject.shape:getRadius() then
+    if distance < self.physicsObject.shape:getRadius() then
         return true
     else
         return false
@@ -90,7 +93,7 @@ function shape:destroyShape()
 end
 
 function shape:addScoreToCount()
-    self.scoreCalcLeft = self.formVariant:getScore(shape)
+    self.scoreCalcLeft = self.formVariant:getScore(self)
     if self.scoreCalcLeft == 0 then
         self.scoreCalculated = true
     end
@@ -136,15 +139,17 @@ function shape:update(dt)
         self.hintTimeCounter = 0
     end
 
-
     local newState = self.currentState.updateState(self)
     if newState ~= self.currentState then
 	newState.enter(self)
     end
     self.currentState = newState
     self.currentState.update(self)
+    self.pos.x, self.pos.y = self.physicsObject.body:getPosition()
 end
 
 function shape:draw()
     self.currentState.draw(self)
 end
+
+return shape
