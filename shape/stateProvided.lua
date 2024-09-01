@@ -1,17 +1,6 @@
 local shapeState = require "shape.shapeState"
 
 
-local function isMouseInsideShape(shape)
-    local vector = require 'lib.vector'
-    local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
-    local distance = shape.pos:dist(curMousePos)
-
-    if distance < shape.physicsObject.shape:getRadius() then
-        return true
-    else
-        return false
-    end
-end
 
 local function setPositionForProvided(shape)
     --Calculate base position
@@ -25,7 +14,7 @@ end
 return shapeState:new(
 --Update state
 function(shape)
-    if love.mouse.isDown(1) and isMouseInsideShape(shape) then
+    if love.mouse.isDown(1) and shape:isMouseInsideShape() then
 	return ShapeStates.ACTIVE
     end
     return ShapeStates.PROVIDED
@@ -52,6 +41,10 @@ end,
 
 --draw
 function(shape)
+    if shape.hintTimeCounter > 0 then
+        --Highlight object when mouse hovered
+        love.graphics.setColor(love.math.colorFromBytes(255, 255, 153))
+    end
     local scaleImg = 0.3
     local scaleShift = 0
     love.graphics.draw(shape.formVariant.iconImage,

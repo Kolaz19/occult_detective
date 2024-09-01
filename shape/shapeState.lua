@@ -4,6 +4,7 @@
 ---@field enter fun(shape: shape)
 ---@field draw fun(shape: shape)
 ---@field removeConnectionsDistance fun(shape: shape)
+---@field drawLines fun(shape: shape)
 ---@field hintTimeCounter integer
 local shapeState = {}
 shapeState.hintTimeCounter = 0
@@ -29,6 +30,18 @@ function shapeState.removeConnectionsDistance(shape)
             table.remove(shape.connections, index)
             break
         end
+    end
+end
+
+function shapeState.drawLines(shape)
+    for _, con in ipairs(shape.connections) do
+        if con.isActive or shape.isActive then
+            --love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
+	else
+            love.graphics.setColor(love.math.colorFromBytes(153, 0, 0))
+        end
+        love.graphics.line(shape.pos.x, shape.pos.y, con.pos.x, con.pos.y)
+        love.graphics.setColor(1, 1, 1)
     end
 end
 

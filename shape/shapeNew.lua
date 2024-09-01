@@ -1,5 +1,5 @@
 local vector = require 'lib.vector'
-local states = require 'shape.globalShapeStates'
+require 'shape.globalShapeStates'
 
 ---@class shape
 ---@field connections table
@@ -17,8 +17,6 @@ local states = require 'shape.globalShapeStates'
 local shape = {}
 shape.__index = shape
 shape.currentState = ShapeStates.PROVIDED
-shape.connections = {}
-shape.formVariant = nil
 shape.pos = vector.new(0, 0)
 --Seconds until popup shows
 local hintCounterLimit = 0.3
@@ -56,19 +54,6 @@ function shape:isVariant(variantName)
     return self.formVariant:isVariant(variantName)
 end
 
-function shape:update()
-    local newState = self.currentState.updateState(self)
-    if newState ~= self.currentState then
-	newState.enter(self)
-    end
-    self.currentState = newState
-    self.currentState.update(self)
-end
-
-function shape:draw()
-    self.currentState.draw(self)
-end
-
 function shape:addConnection(partner)
     for _, val in ipairs(self.connections) do
         if partner == val then
@@ -87,4 +72,79 @@ function shape:addConnection(partner)
         table.insert(self.connections, partner)
         table.insert(partner.connections, self)
     end
+end
+
+function shape:isMouseInsideShape()
+    local curMousePos = vector.new(Cam:worldCoords(love.mouse.getPosition()))
+    local distance = shape.pos:dist(curMousePos)
+
+    if distance < shape.physicsObject.shape:getRadius() then
+        return true
+    else
+        return false
+    end
+end
+
+function shape:destroyShape()
+    self.physicsObject.body:destroy()
+end
+
+function shape:addScoreToCount()
+    self.scoreCalcLeft = self.formVariant:getScore(shape)
+    if self.scoreCalcLeft == 0 then
+        self.scoreCalculated = true
+    end
+end
+
+function shape:subScore(fast)
+    local modifier = 0
+    if fast == true then
+	modifier = 1
+    end
+
+    if self.scoreCalcLeft > 0 then
+        self.scoreCalcLeft = self.scoreCalcLeft - 1 - modifier
+	if self.scoreCalcLeft == 0 then
+	    self.scoreCalculated = true
+	    return 1 + modifier
+	elseif self.scoreCalcLeft < 0 then
+	    self.scoreCalcLeft = 0
+	    self.scoreCalculated = true
+	    return 1
+	end
+	return 1 + modifier
+    elseif self.scoreCalcLeft < 0 then
+        self.scoreCalcLeft = self.scoreCalcLeft + 1 + modifier
+        if self.scoreCalcLeft == 0 then
+	    self.scoreCalculated = true
+	    return -1 - modifier
+	elseif self.scoreCalcLeft > 0 then
+	    self.scoreCalcLeft = 0
+	    self.scoreCalculated = true
+	    return -1
+	end
+	return -1 - modifier
+    end
+end
+
+function shape:update(dt)
+    if not love.mouse.isDown(1) and self:isMouseInsideShape() then
+        if self.hintTimeCounter < hintCounterLimit then
+            self.hintTimeCounter = self.hintTimeCounter + dt
+        end
+    else
+        self.hintTimeCounter = 0
+    end
+
+
+    local newState = self.currentState.updateState(self)
+    if newState ~= self.currentState then
+	newState.enter(self)
+    end
+    self.currentState = newState
+    self.currentState.update(self)
+end
+
+function shape:draw()
+    self.currentState.draw(self)
 end
