@@ -15,7 +15,6 @@ require 'shape.globalShapeStates'
 ---@field scoreCalcLeft integer
 ---@field currentState shapeState
 ---@field roundIndex integer
----@field currentActiveShape shape
 local shape = {}
 shape.__index = shape
 --Seconds until popup shows
@@ -58,6 +57,8 @@ function shape:isVariant(variantName)
 end
 
 function shape:addConnection(partner)
+    --Check if partner is shape or partner was already added
+    if self == partner then return end
     for _, val in ipairs(self.connections) do
         if partner == val then
             return

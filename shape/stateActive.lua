@@ -21,8 +21,10 @@ return shapeState:new(
 function(shape)
     if not love.mouse.isDown(1) then
 	if isUnderThresholdScreen() then
+	    CurrentActiveShape = nil
 	    return ShapeStates.PROVIDED
 	else
+	    CurrentActiveShape = nil
 	    return ShapeStates.PLACED
 	end
     end
@@ -38,9 +40,8 @@ end,
 
 --Enter
 function(shape)
-    local shapeClass = require 'shape.shapeNew'
-    shapeClass.currentActiveShape = shape
     shape.physicsObject.fixture:setSensor(true)
+    CurrentActiveShape = shape
 end,
 
 --draw
@@ -54,6 +55,5 @@ function(shape)
         shape.formVariant.imgScale * scaleImg,
         shape.formVariant.imgScale * scaleImg)
     love.graphics.setColor(1, 1, 1)
-    shapeState.drawLines(shape)
 end
 )

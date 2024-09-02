@@ -216,7 +216,7 @@ function r:update(dt)
 	table.insert(game.placedShapes, elementToRemove)
     end
 
-    --Add connection
+    --Add new connections
     for _, value in ipairs(game.placedShapes) do
 	for _, valueIn in ipairs(game.placedShapes) do
 	    value:addConnection(valueIn)

@@ -14,7 +14,7 @@ end
 return shapeState:new(
 --Update state
 function(shape)
-    if love.mouse.isDown(1) and shape:isMouseInsideShape() then
+    if love.mouse.isDown(1) and shape:isMouseInsideShape() and CurrentActiveShape == nil then
 	return ShapeStates.ACTIVE
     end
     return ShapeStates.PROVIDED
