@@ -36,6 +36,7 @@ end,
 function(shape)
     followMouse(shape)
     shapeState.removeConnectionsDistance(shape)
+    shape.hintTimeCounter = 0
 end,
 
 --Enter

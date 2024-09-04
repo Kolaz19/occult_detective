@@ -1,16 +1,5 @@
 local shapeState = require "shape.shapeState"
 
-local function drawLines(shape)
-    for _, con in ipairs(shape.connections) do
-	if con.currentState == ShapeStates.PLACED then
-	    love.graphics.setColor(love.math.colorFromBytes(153, 0, 0))
-	else
-	    love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
-	end
-        love.graphics.line(shape.pos.x, shape.pos.y, con.pos.x, con.pos.y)
-        love.graphics.setColor(1, 1, 1)
-    end
-end
 
 return shapeState:new(
 --Update state
@@ -48,7 +37,6 @@ function(shape)
         0,
         shape.formVariant.imgScale * scaleImg,
         shape.formVariant.imgScale * scaleImg)
-    drawLines(shape)
     love.graphics.setColor(1, 1, 1)
 end
 )

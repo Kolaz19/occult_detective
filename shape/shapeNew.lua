@@ -131,12 +131,14 @@ function shape:subScore(fast)
     end
 end
 
+
 function shape:update(dt)
     if not love.mouse.isDown(1) and self:isMouseInsideShape() then
         if self.hintTimeCounter < hintCounterLimit then
             self.hintTimeCounter = self.hintTimeCounter + dt
         end
     else
+	--Active state does also set timer to 0
         self.hintTimeCounter = 0
     end
 
@@ -151,6 +153,24 @@ end
 
 function shape:draw()
     self.currentState.draw(self)
+end
+
+function shape:drawLines()
+    for _, con in ipairs(self.connections) do
+	if con.currentState == ShapeStates.PLACED then
+	    love.graphics.setColor(love.math.colorFromBytes(153, 0, 0))
+	else
+	    love.graphics.setColor(love.math.colorFromBytes(0, 204, 0))
+	end
+        love.graphics.line(self.pos.x, self.pos.y, con.pos.x, con.pos.y)
+        love.graphics.setColor(1, 1, 1)
+    end
+end
+
+function shape:drawHint()
+    if self.hintTimeCounter >= hintCounterLimit then
+        love.graphics.draw(self.formVariant.hintImage, 1900, 160, 0, 3, 3)
+    end
 end
 
 return shape

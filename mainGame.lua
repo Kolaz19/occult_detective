@@ -228,33 +228,6 @@ function r:update(dt)
 	end
     end
 
-
-
-    --[[
-        --Move provided shapes into placed shapes
-        local elemtToSwitch = 0
-        for key, val in ipairs(game.rounds.providedShapes) do
-            if val.wasDropped == true then
-                elemtToSwitch = key
-            end
-        end
-        table.insert(game.placedShapes, game.rounds.providedShapes[elemtToSwitch])
-        table.remove(game.rounds.providedShapes, elemtToSwitch)
-
-        --Combine placed shapes
-        if activeShape ~= nil then activeShape:removeConnections() end
-        for _, val in ipairs(game.placedShapes) do
-            if activeShape ~= nil then activeShape:addConnection(val) end
-            val:removeConnections()
-            for _, valIn in ipairs(game.placedShapes) do
-                if val ~= valIn then
-                    val:addConnection(valIn)
-                end
-            end
-        end
-    end
-    --]]
-
     game.world:update(dt)
 end
 
@@ -283,10 +256,11 @@ function r:draw()
             r.backgroundHeight * r.backgroundScale / 2 - 400, 0, 2, 2)
 	    drawRewardBoard()
     else
-        for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-            shapeInstance:draw()
-        end
         for _, shapeInstance in ipairs(game.placedShapes) do
+            shapeInstance:draw()
+	    shapeInstance:drawLines()
+        end
+        for _, shapeInstance in ipairs(game.rounds.providedShapes) do
             shapeInstance:draw()
         end
 	love.graphics.draw(ScorePlate, r.backgroundWidth * r.backgroundScale - 650, -10, 0, 2.2, 1.3)
@@ -303,10 +277,10 @@ function r:draw()
 
     if not gameFinished then
 	for _, shapeInstance in ipairs(game.rounds.providedShapes) do
-	    --shapeInstance:drawHint()
+	    shapeInstance:drawHint()
 	end
 	for _, shapeInstance in ipairs(game.placedShapes) do
-	    --shapeInstance:drawHint()
+	    shapeInstance:drawHint()
 	end
     end
     Cam:detach()
