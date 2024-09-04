@@ -1,5 +1,5 @@
 local r = { windowScale = 0.8, maxWindowHeight = 0, backgroundWidth = 0, backgroundHeight = 0, backgroundScale = 1.5 }
-local shape = require('shape.shapeNew')
+local shape = require('shape.shape')
 local round = require('round')
 local shapeFactory = require 'formVariants.formVariantFactory'
 local game = require('game').new(4, {})
@@ -259,6 +259,7 @@ function r:draw()
         for _, shapeInstance in ipairs(game.placedShapes) do
             shapeInstance:draw()
 	    shapeInstance:drawLines()
+	    shapeInstance:drawScore(r.backgroundWidth * r.backgroundScale)
         end
         for _, shapeInstance in ipairs(game.rounds.providedShapes) do
             shapeInstance:draw()

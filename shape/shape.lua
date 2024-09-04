@@ -168,9 +168,22 @@ function shape:drawLines()
 end
 
 function shape:drawHint()
-    if self.hintTimeCounter >= hintCounterLimit then
+    if self.hintTimeCounter >= hintCounterLimit and self.scoreCalcLeft == 0 then
         love.graphics.draw(self.formVariant.hintImage, 1900, 160, 0, 3, 3)
     end
+end
+
+function shape:drawScore(backgroundSize)
+    if self.scoreCalcLeft > 0 then
+        love.graphics.setColor(love.math.colorFromBytes(0, 255, 0))
+    elseif self.scoreCalcLeft < 0 then
+        love.graphics.setColor(love.math.colorFromBytes(255, 0, 0))
+    else
+	return
+    end
+---@diagnostic disable-next-line: param-type-mismatch
+    love.graphics.print(self.scoreCalcLeft, backgroundSize - 315, 120, 0, 2, 2)
+    love.graphics.setColor(1, 1, 1)
 end
 
 return shape
